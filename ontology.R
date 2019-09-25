@@ -1,5 +1,5 @@
 
-path<-"data/FBOnto2018_6.obo"
+path<-"ontology/FBOnto.obo"
 
 ontology <- get_ontology(path, extract_tags = "everything")
 
@@ -30,5 +30,4 @@ FOODS <- get_descendants(ontology, "FB_0001")
 
 BIOMARKERSc <- get_term_property(ontology, "FB_01501", property_name = "children")
 FOODSc <- get_term_property(ontology, "FB_0001",  property_name = "children")
-
 

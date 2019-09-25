@@ -73,12 +73,31 @@ function(input, output, session) {
       
       if(input$plotnames){
         
-        ggraph(graph, layout = input$layout) +
-          geom_edge_fan(aes(alpha = ..index..), show.legend = FALSE) +
-          geom_edge_link(aes(colour = Property), alpha = input$a_edge) +
-          geom_node_point(aes(size = Interactions), colour = 'snow4', alpha = input$a_node) +
-          theme_graph(foreground = 'white', fg_text_colour = 'white') + 
-          geom_node_text(aes(label = name), color = 'black', size = 6, repel = TRUE)
+        if (input$labeltext == "label"){
+          
+          ggraph(graph, layout = input$layout) +
+            geom_edge_fan(aes(alpha = ..index..), show.legend = FALSE) +
+            geom_edge_link(aes(colour = Property), alpha = input$a_edge) +
+            geom_node_point(aes(size = Interactions), colour = 'snow4', alpha = input$a_node) +
+            theme_graph(foreground = 'white', fg_text_colour = 'white') + 
+            geom_node_label(aes(label = name), color = 'black', size = input$labelsize, repel = TRUE) +
+            theme(legend.title = element_text(size = 18),
+                  legend.text = element_text(size = 16),
+                  legend.position = "bottom")
+          
+        } else{
+          
+          ggraph(graph, layout = input$layout) +
+            geom_edge_fan(aes(alpha = ..index..), show.legend = FALSE) +
+            geom_edge_link(aes(colour = Property), alpha = input$a_edge) +
+            geom_node_point(aes(size = Interactions), colour = 'snow4', alpha = input$a_node) +
+            theme_graph(foreground = 'white', fg_text_colour = 'white') + 
+            geom_node_text(aes(label = name), color = 'black', size = input$labelsize, repel = TRUE) +
+            theme(legend.title = element_text(size = 18),
+                  legend.text = element_text(size = 16),
+                  legend.position = "bottom")
+          
+        }
         
       } else {
         
@@ -86,19 +105,21 @@ function(input, output, session) {
           geom_edge_fan(aes(alpha = ..index..), show.legend = FALSE) +
           geom_edge_link(aes(colour = Property), alpha = input$a_edge) +
           geom_node_point(aes(size = Interactions), colour = 'snow4', alpha = input$a_node) +
-          theme_graph(foreground = 'white', fg_text_colour = 'white')
+          theme_graph(foreground = 'white', fg_text_colour = 'white') +
+          theme(legend.title = element_text(size = 18),
+                legend.text = element_text(size = 16),
+                legend.position = "bottom")
         
       }
 
   })
+
+ #### TABLE
   
-
-
-
-  output$ontologytable <- DT::renderDataTable({
+ output$ontologytable <- DT::renderDataTable({
     
     item <- input$FBOnto_name
-    code <- as.character(names[names$value == item ,1])
+    code <- as.character(names[names$value == item , 1])
     
     ##
     
