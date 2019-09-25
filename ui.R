@@ -14,7 +14,7 @@ navbarPage("Food-Biomarker Ontology Visualization Tool", id="nav",
                         ),
                         
                         absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
-                                      draggable = FALSE, top = 60, left = "auto", right = 20, bottom = "auto",
+                                      draggable = TRUE, top = 60, left = "auto", right = 20, bottom = "auto",
                                       width = 325, height = "auto",
                                       
                                       h2("Network parameters"),
