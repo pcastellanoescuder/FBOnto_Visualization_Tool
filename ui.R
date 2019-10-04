@@ -19,7 +19,7 @@ navbarPage("Food-Biomarker Ontology Visualization Tool", id="nav",
                                       
                                       h2("Network parameters"),
                                       
-                                      selectizeInput("FBOnto_name", label = "FBOnto object:",
+                                      selectizeInput("FBOnto_name", label = "FOBI object:",
                                                   choices = names2$value, selected = "Vegetables"),
                                       
                                       selectInput("level", "Level:", 
