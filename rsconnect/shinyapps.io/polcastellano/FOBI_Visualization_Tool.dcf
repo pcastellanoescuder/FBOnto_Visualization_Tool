@@ -1,0 +1,12 @@
+name: FOBI_Visualization_Tool
+title: FOBI_Visualization_Tool
+username:
+account: polcastellano
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 1311822
+bundleId: 2487188
+url: https://polcastellano.shinyapps.io/FOBI_Visualization_Tool/
+when: 1570705276.5186
+asMultiple: FALSE
+asStatic: FALSE
