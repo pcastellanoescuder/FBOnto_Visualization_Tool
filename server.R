@@ -6,6 +6,7 @@ function(input, output, session) {
   ## Interactive Map ###########################################
   
   # Create the map
+  
   output$ontologyplot <- renderPlot({
 
       item <- input$FBOnto_name

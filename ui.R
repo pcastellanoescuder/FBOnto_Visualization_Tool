@@ -9,7 +9,7 @@ navbarPage("Food-Biomarker Ontology Visualization Tool", id="nav",
                     div(class="outer",
                         
                         tags$head(
-                          # Include our custom CSS
+                          
                           includeCSS("styles.css")
                         ),
                         
@@ -20,7 +20,7 @@ navbarPage("Food-Biomarker Ontology Visualization Tool", id="nav",
                                       h2("Network parameters"),
                                       
                                       selectizeInput("FBOnto_name", label = "FOBI object:",
-                                                  choices = names2$value, selected = "Vegetables"),
+                                                  choices = names2$value, selected = "apple"),
                                       
                                       selectInput("level", "Level:", 
                                                   choices = c('all', 'ancestors', 'descendants'), selected = 'descendants'),
@@ -53,15 +53,15 @@ navbarPage("Food-Biomarker Ontology Visualization Tool", id="nav",
 
                     plotOutput("ontologyplot", width="85%", height="95%")),
                     
-                    br(),br(),br(),br(),br(),
+                    br(),br(), #br(),br(),br(),
                     
                     ## FOOTER
                     
-                    tags$div(id="cite", tags$a(href="https://github.com/pcastellanoescuder/FoodBiomarkerOntology", 
-                                               tags$em('Food-Biomarker Ontology')),
-                             ' by Pol Castellano-Escuder et al. (2019).',
-                             ' Code available on Github: ', tags$a(href="https://github.com/pcastellanoescuder/FOBI_Visualization_Tool", 
-                                                           tags$em('https://github.com/pcastellanoescuder/FOBI_Visualization_Tool'))),
+                    # tags$div(id="cite", tags$a(href="https://github.com/pcastellanoescuder/FoodBiomarkerOntology", 
+                    #                            tags$em('Food-Biomarker Ontology')),
+                    #          ' by Pol Castellano-Escuder et al. (2019).',
+                    #          ' Code available on Github: ', tags$a(href="https://github.com/pcastellanoescuder/FOBI_Visualization_Tool", 
+                    #                                        tags$em('https://github.com/pcastellanoescuder/FOBI_Visualization_Tool'))),
                     br()
                     ),
           

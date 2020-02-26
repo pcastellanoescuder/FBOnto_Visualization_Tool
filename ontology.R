@@ -1,5 +1,5 @@
 
-path<-"ontology/FOBI.obo"
+path <- "ontology/fobi_old.obo"
 
 ontology <- get_ontology(path, extract_tags = "everything")
 
