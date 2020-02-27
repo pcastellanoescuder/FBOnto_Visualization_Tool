@@ -1,86 +1,69 @@
 source("helpers.R")
-source("ontology.R")
+source("get_relations.R")
 
-navbarPage("Food-Biomarker Ontology Visualization Tool", id="nav", 
-           
-           theme = shinytheme("spacelab"),
-           
-           tabPanel("Network",
-                    div(class="outer",
-                        
-                        tags$head(
-                          
-                          includeCSS("styles.css")
-                        ),
-                        
-                        absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
-                                      draggable = TRUE, top = 60, left = "auto", right = 20, bottom = "auto",
-                                      width = 325, height = "auto",
-                                      
-                                      h2("Network parameters"),
-                                      
-                                      selectizeInput("FBOnto_name", label = "FOBI object:",
-                                                  choices = names2$value, selected = "apple"),
-                                      
-                                      selectInput("level", "Level:", 
-                                                  choices = c('all', 'ancestors', 'descendants'), selected = 'descendants'),
-                                      
-                                      checkboxGroupInput("property", "Properties:",
-                                                         c("is_a" = "is_a",
-                                                           "BiomarkerOf" = "BiomarkerOf",
-                                                           "IsIngredientOf" = "IsIngredientOf"),
-                                                         selected = "is_a"),
-                                      
-                                      selectInput("layout", "Layout:", 
-                                                  choices = c('fr', 'kk', 'lgl', 'graphopt', 'drl', 'linear')),
-                                      
-                                      checkboxInput("plotnames", "Network Labels"),
-                                      
-                                      conditionalPanel("input.plotnames",
-                                                       radioButtons("labeltext",
-                                                                    "Label type:",
-                                                                    c("Label" = "label",
-                                                                      "Text" = "text")),
-                                                       sliderInput("labelsize", "Label size", 1, 10, 6, step = 1)),
-                                      
-                                      sliderInput("a_node", "Nodes alfa", 0,1,1, step = 0.1),
-                                      
-                                      sliderInput("a_edge", "Edges alfa", 0,1,1, step = 0.1)
+tagList(
+  
+  shinythemes::themeSelector(),
+  
+  navbarPage(
+    title = "Food-Biomarker Ontology Visualization Tool",
+    
+    tabPanel("Graph", 
+             sidebarPanel(width = 3,
+               
+               selectizeInput("FOBI_name", 
+                              label = "FOBI entity:",
+                              multiple = TRUE,
+                              choices = names, 
+                              selected = c("4,5-dicaffeoylquinic acid", "Quinic acids and derivatives", "Cyclitols and derivatives")), 
+               
+               selectizeInput("property", 
+                              label = "Properties:",
+                              multiple = TRUE,
+                              choices = c("is_a",
+                                          "BiomarkerOf",
+                                          "Contains"), 
+                              selected = c("is_a", "BiomarkerOf")),
+               
+               selectInput("layout", "Layout:", 
+                           choices = c('fr', 'kk', 'lgl', 'graphopt', 'drl', 'linear')),
+               
+               checkboxInput("plotnames", "Network Labels", value = TRUE),
+               
+               conditionalPanel("input.plotnames",
+                                radioButtons("labeltext",
+                                             "Label type:",
+                                             c("Label" = "label",
+                                               "Text" = "text")),
+                                sliderInput("labelsize", "Label size", 1, 10, 5, step = 1)),
+               
+               sliderInput("a_node", "Nodes alfa", 0,1,1, step = 0.1),
+               
+               sliderInput("a_edge", "Edges alfa", 0,1,1, step = 0.1)
+               
+             ),
+             
+             mainPanel(plotOutput("ontologyplot", height = "600px"))
+             
+    ),
+    
+    tabPanel("Table", DT::dataTableOutput("ontologytable"))
+    
+    ),
+    
+  ## ==================================================================================== ##
+  ## FOOTER
+  ## ==================================================================================== ##              
+  footer = p(hr(), p("ShinyApp created by Pol Castellano Escuder",align="center",width=4),
+           p(("University of Barcelona"),align="center",width=4),
+           p(("Copyright (C) 2019, code licensed under GPLv3"),align="center",width=4),
+           p(("Code available on Github:"),a("https://github.com/pcastellanoescuder/FOBI_Visualization_Tool",href="https://github.com/pcastellanoescuder/FOBI_Visualization_Tool"),align="center",width=4),
+           p(("Cite:"),a("https://github.com/pcastellanoescuder/FoodBiomarkerOntology",href="https://github.com/pcastellanoescuder/FoodBiomarkerOntology"),align="center",width=4)
+           )
+    ## ==================================================================================== ##
+    ## end
+    ## ==================================================================================== ## 
+    # tags$head(includeScript("google-analytics.js"))
 
-                                      ),
-                        
-                    br(),br(),
-
-                    plotOutput("ontologyplot", width="85%", height="95%")),
-                    
-                    br(),br(), #br(),br(),br(),
-                    
-                    ## FOOTER
-                    
-                    # tags$div(id="cite", tags$a(href="https://github.com/pcastellanoescuder/FoodBiomarkerOntology", 
-                    #                            tags$em('Food-Biomarker Ontology')),
-                    #          ' by Pol Castellano-Escuder et al. (2019).',
-                    #          ' Code available on Github: ', tags$a(href="https://github.com/pcastellanoescuder/FOBI_Visualization_Tool", 
-                    #                                        tags$em('https://github.com/pcastellanoescuder/FOBI_Visualization_Tool'))),
-                    br()
-                    ),
-          
-            tabPanel("Table",
-
-                     DT::dataTableOutput("ontologytable")
-            ),
-           
-           br(),
-           
-           ## FOOTER
-           
-           tags$div(id="cite", tags$a(href="https://github.com/pcastellanoescuder/FoodBiomarkerOntology", 
-                                      tags$em('Food-Biomarker Ontology')),
-                    ' by Pol Castellano-Escuder et al. (2019).',
-                    ' Code available on Github: ', tags$a(href="https://github.com/pcastellanoescuder/FOBI_Visualization_Tool", 
-                                                          tags$em('https://github.com/pcastellanoescuder/FOBI_Visualization_Tool'))),
-           br()
-           
-           
 )
 

@@ -1,7 +1,6 @@
-library(leaflet)
 library(tidyverse)
 library(ggraph)
 library(tidygraph)
-library(ontologyIndex)
+library(data.table)
 library(ggrepel)
 library(shinythemes)
