@@ -3,8 +3,6 @@ source("get_relations.R")
 
 tagList(
   
-  shinythemes::themeSelector(),
-  
   navbarPage(
     title = "Food-Biomarker Ontology Visualization Tool",
     
@@ -47,16 +45,18 @@ tagList(
              
     ),
     
-    tabPanel("Table", DT::dataTableOutput("ontologytable"))
+    tabPanel("Table", DT::dataTableOutput("ontologytable")),
     
-    ),
+    tabPanel("Enrichment Analysis")
+  
+  ),
     
   ## ==================================================================================== ##
   ## FOOTER
   ## ==================================================================================== ##              
   footer = p(hr(), p("ShinyApp created by Pol Castellano Escuder",align="center",width=4),
            p(("University of Barcelona"),align="center",width=4),
-           p(("Copyright (C) 2019, code licensed under GPLv3"),align="center",width=4),
+           p(("Copyright (C) 2020, code licensed under GPLv3"),align="center",width=4),
            p(("Code available on Github:"),a("https://github.com/pcastellanoescuder/FOBI_Visualization_Tool",href="https://github.com/pcastellanoescuder/FOBI_Visualization_Tool"),align="center",width=4),
            p(("Cite:"),a("https://github.com/pcastellanoescuder/FoodBiomarkerOntology",href="https://github.com/pcastellanoescuder/FoodBiomarkerOntology"),align="center",width=4)
            )
