@@ -112,7 +112,7 @@ FOBI:030629",
                           DT::dataTableOutput("oratable")
                           ),
                  tabPanel("Plot",
-                          plotlyOutput("oraplot")
+                          plotOutput("oraplot")
                           )
                  )
                )

@@ -119,6 +119,28 @@ output$oratable <- DT::renderDataTable({
                   pageLength = nrow(res)))
 })
 
+output$oraplot <- renderPlot({
+  
+  res <- read_delim(input$ora_metabolites, delim = "\n", col_names = FALSE) %>%
+    pull(1) %>%
+    fobitools::id_convert(to = "FOBI") %>%
+    pull(FOBI) %>%
+    fobitools::ora(method = input$correction_method_ora) %>%
+    mutate(pvalue = round(pvalue, 4),
+           pvalueAdj = round(pvalueAdj, 4)) %>%
+    arrange(!desc(pvalueAdj))
+  
+  ggplot(res, aes(x = -log10(pvalue), y = reorder(description, -log10(pvalue)), fill = -log10(pvalue), label = classId)) +
+    xlab("-log10(P-value)") +
+    ylab("") +
+    geom_col() +
+    theme_bw() +
+    theme(legend.position = "none",
+          axis.text = element_text(size = 13),
+          axis.title = element_text(size = 15))
+  
+})
+
 }
 
  
