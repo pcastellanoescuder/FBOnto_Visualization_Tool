@@ -7,6 +7,10 @@ tagList(
     title = "Food-Biomarker Ontology Visualization Tool",
     theme = shinytheme("spacelab"),
     
+    ## ==================================================================================== ##
+    ## GRAPH TAB
+    ## ==================================================================================== ## 
+    
     tabPanel("Graph", 
              sidebarPanel(width = 3,
                           
@@ -55,29 +59,37 @@ tagList(
              ),
              
              mainPanel(
-               plotOutput("ontologyplot", height = "600px")
-             )
-    ),
+               plotOutput("ontologyplot", height = "750px", width = "1000px")
+               )
+             ),
+    
+    ## ==================================================================================== ##
+    ## TABLE TAB
+    ## ==================================================================================== ## 
     
     tabPanel("Table", DT::dataTableOutput("ontologytable")
+             ),
+    
+    ## ==================================================================================== ##
+    ## ENRICHMENT ANALYSIS TAB
+    ## ==================================================================================== ## 
+    
+    tabPanel("Enrichment Analysis", DT::dataTableOutput("oratable")
+             )
     ),
-    
-    tabPanel("Enrichment Analysis")
-    
-  ),
   
   ## ==================================================================================== ##
   ## FOOTER
   ## ==================================================================================== ##              
-  footer = p(hr(), p("ShinyApp created by Pol Castellano Escuder",align="center",width=4),
-             p(("University of Barcelona"),align="center",width=4),
-             p(("Copyright (C) 2020, code licensed under GPLv3"),align="center",width=4),
-             p(("Code available on Github:"),a("https://github.com/pcastellanoescuder/FOBI_Visualization_Tool",href="https://github.com/pcastellanoescuder/FOBI_Visualization_Tool"),align="center",width=4),
-             p(("Cite:"),a("https://github.com/pcastellanoescuder/FoodBiomarkerOntology",href="https://github.com/pcastellanoescuder/FoodBiomarkerOntology"),align="center",width=4)
+  footer = p(hr(), p("ShinyApp created by ", a(HTML("<b>Pol Castellano Escuder</b>"), href = "https://pcastellanoescuder.github.io"), align = "center", width = 4),
+             p(("Statistics and Bioinformatics Lab and Biomarkers and Nutritional & Food Metabolomics Lab from "), align = "center", width = 4),
+             p(("University of Barcelona"), align = "center", width = 4),
+             p(("Copyright (C) 2020, code licensed under GPLv3"), align = "center", width = 4),
+             p(("Code available on Github:"), a("https://github.com/pcastellanoescuder/FOBI_Visualization_Tool", 
+                                                href = "https://github.com/pcastellanoescuder/FOBI_Visualization_Tool"), align = "center", width = 4),
+             p(("Please cite:"), a("https://doi.org/10.1093/databa/baaa033", href = "https://doi.org/10.1093/databa/baaa033"), align = "center", width = 4)
   )
-  ## ==================================================================================== ##
-  ## end
-  ## ==================================================================================== ## 
+
   # tags$head(includeScript("google-analytics.js"))
   
   )

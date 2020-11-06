@@ -1,6 +1,5 @@
 library(tidyverse)
 library(ggraph)
 library(tidygraph)
-library(data.table)
 library(ggrepel)
 library(shinythemes)

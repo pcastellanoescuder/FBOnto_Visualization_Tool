@@ -1,5 +1,3 @@
-source("helpers.R")
-source("get_relations.R")
 
 function(input, output, session) {
  
@@ -67,7 +65,8 @@ output$ontologytable <- DT::renderDataTable({
   
   graph_table <- graph_table %>% 
     filter(from %in% entity | to %in% entity) %>% 
-    filter(Property %in% input$property)
+    filter(Property %in% input$property) %>%
+    rename(Source = 1, Target = 2)
   
   DT::datatable(graph_table, 
                 filter = 'none',extensions = 'Buttons',
@@ -87,6 +86,32 @@ output$ontologytable <- DT::renderDataTable({
                   order=list(list(2, "desc")),
                   pageLength = nrow(graph_table)))
   })
+
+#### ORA
+
+output$oratable <- DT::renderDataTable({
+  
+  # code
+  
+  # DT::datatable(graph_table, 
+  #               filter = 'none',extensions = 'Buttons',
+  #               escape=FALSE,  rownames=FALSE, class = 'cell-border stripe',
+  #               options = list(
+  #                 dom = 'Bfrtip',
+  #                 buttons = 
+  #                   list("copy", "print", list(
+  #                     extend="collection",
+  #                     buttons=list(list(extend = "csv",
+  #                                       filename = paste0("FOBI_table_", paste0(input$FOBI_name, collapse = "_"))),
+  #                                  list(extend = "excel",
+  #                                       filename = paste0("FOBI_table_", paste0(input$FOBI_name, collapse = "_"))),
+  #                                  list(extend = "pdf",
+  #                                       filename = paste0("FOBI_table_", paste0(input$FOBI_name, collapse = "_")))),
+  #                     text = "Dowload")),
+  #                 order=list(list(2, "desc")),
+  #                 pageLength = nrow(graph_table)))
+})
+
 }
 
  
