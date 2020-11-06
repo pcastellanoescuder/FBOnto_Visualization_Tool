@@ -77,11 +77,11 @@ output$ontologytable <- DT::renderDataTable({
                     list("copy", "print", list(
                       extend="collection",
                       buttons=list(list(extend = "csv",
-                                        filename = paste0("FOBI_table_", paste0(input$FOBI_name, collapse = "_"))),
+                                        filename = paste0(Sys.Date(), "_FOBI_table")),
                                    list(extend = "excel",
-                                        filename = paste0("FOBI_table_", paste0(input$FOBI_name, collapse = "_"))),
+                                        filename = paste0(Sys.Date(), "_FOBI_table")),
                                    list(extend = "pdf",
-                                        filename = paste0("FOBI_table_", paste0(input$FOBI_name, collapse = "_")))),
+                                        filename = paste0(Sys.Date(), "_FOBI_table"))),
                       text = "Dowload")),
                   order=list(list(2, "desc")),
                   pageLength = nrow(graph_table)))
@@ -91,25 +91,32 @@ output$ontologytable <- DT::renderDataTable({
 
 output$oratable <- DT::renderDataTable({
   
-  # code
+  res <- read_delim(input$ora_metabolites, delim = "\n", col_names = FALSE) %>% 
+    pull(1) %>%
+    fobitools::id_convert(to = "FOBI") %>%
+    pull(FOBI) %>%
+    fobitools::ora(method = input$correction_method_ora) %>%
+    mutate(pvalue = round(pvalue, 4),
+           pvalueAdj = round(pvalueAdj, 4)) %>%
+    arrange(!desc(pvalueAdj))
   
-  # DT::datatable(graph_table, 
-  #               filter = 'none',extensions = 'Buttons',
-  #               escape=FALSE,  rownames=FALSE, class = 'cell-border stripe',
-  #               options = list(
-  #                 dom = 'Bfrtip',
-  #                 buttons = 
-  #                   list("copy", "print", list(
-  #                     extend="collection",
-  #                     buttons=list(list(extend = "csv",
-  #                                       filename = paste0("FOBI_table_", paste0(input$FOBI_name, collapse = "_"))),
-  #                                  list(extend = "excel",
-  #                                       filename = paste0("FOBI_table_", paste0(input$FOBI_name, collapse = "_"))),
-  #                                  list(extend = "pdf",
-  #                                       filename = paste0("FOBI_table_", paste0(input$FOBI_name, collapse = "_")))),
-  #                     text = "Dowload")),
-  #                 order=list(list(2, "desc")),
-  #                 pageLength = nrow(graph_table)))
+  DT::datatable(res,
+                filter = 'none',extensions = 'Buttons',
+                escape=FALSE,  rownames=FALSE, class = 'cell-border stripe',
+                options = list(
+                  dom = 'Bfrtip',
+                  buttons =
+                    list("copy", "print", list(
+                      extend="collection",
+                      buttons=list(list(extend = "csv",
+                                        filename = paste0(Sys.Date(), "_FOBI_Enrichment_Analysis")),
+                                   list(extend = "excel",
+                                        filename = paste0(Sys.Date(), "_FOBI_Enrichment_Analysis")),
+                                   list(extend = "pdf",
+                                        filename = paste0(Sys.Date(), "_FOBI_Enrichment_Analysis"))),
+                      text = "Dowload")),
+                  order=list(list(2, "desc")),
+                  pageLength = nrow(res)))
 })
 
 }
