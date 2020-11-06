@@ -71,6 +71,45 @@ tagList(
              ),
     
     ## ==================================================================================== ##
+    ## CONVERT ID TAB
+    ## ==================================================================================== ## 
+    
+    tabPanel("Convert IDs", 
+             
+             sidebarPanel(width = 3,
+                          
+                          textAreaInput("convId_metabolites", 
+                                        label = "Enter your metabolites here:",
+                                        value = "FOBI:030318
+FOBI:030653
+FOBI:030663
+FOBI:030342
+FOBI:030325
+FOBI:030375
+FOBI:030421
+FOBI:030431
+FOBI:030450
+FOBI:030629",
+                                        # cat("FOBI:030318", "FOBI:030653", "FOBI:030663", "FOBI:030342", "FOBI:030325", "FOBI:030375",
+                                        #             "FOBI:030421", "FOBI:030431", "FOBI:030450", "FOBI:030629", sep = "\n"),
+                                        height = "220px"
+                          ),
+                          
+                          helpText(HTML("Note: can use metabolite names, FOBI, ChemSpider, KEGG, PubChemCID, InChIKey, InChICode and HMDB IDs")),
+                          
+                          selectInput("convTo",
+                                      "Convert IDs to:",
+                                      choices = c("metaboliteNames", "FOBI", "ChemSpider", "KEGG", "PubChemCID", "InChIKey", "InChICode", "HMDB"),
+                                      selected = "FOBI"
+                          )
+                          
+             ),
+             
+             mainPanel(DT::dataTableOutput("IDtable")
+                       )
+    ),
+    
+    ## ==================================================================================== ##
     ## ENRICHMENT ANALYSIS TAB
     ## ==================================================================================== ## 
     
