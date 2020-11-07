@@ -80,18 +80,16 @@ tagList(
                           
                           textAreaInput("convId_metabolites", 
                                         label = "Enter your metabolites here:",
-                                        value = "FOBI:030318
-FOBI:030653
-FOBI:030663
-FOBI:030342
-FOBI:030325
-FOBI:030375
-FOBI:030421
-FOBI:030431
-FOBI:030450
-FOBI:030629",
-                                        # cat("FOBI:030318", "FOBI:030653", "FOBI:030663", "FOBI:030342", "FOBI:030325", "FOBI:030375",
-                                        #             "FOBI:030421", "FOBI:030431", "FOBI:030450", "FOBI:030629", sep = "\n"),
+                                        value = "PHIQHXFUZVPYII-LURJTMIESA-N
+QVWAEZJXDYOKEH-UHFFFAOYSA-N
+PFTAWBLQPZVEMU-DZGCQCFKSA-N
+FEWJPZIEWOKRBE-JCYAYHJZSA-N
+UYPYRKYUKCHHIB-UHFFFAOYSA-N
+CQOVPNPJLQNMDC-ZETCQYMHSA-N
+IQPNAANSBPBGFQ-UHFFFAOYSA-N
+XOAAWQZATWQOTB-UHFFFAOYSA-N
+OAIJSZIZWZSQBC-GYZMGTAESA-N
+HCAJEUSONLESMK-UHFFFAOYSA-N",
                                         height = "220px"
                           ),
                           

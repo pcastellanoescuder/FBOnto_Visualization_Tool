@@ -87,6 +87,33 @@ output$ontologytable <- DT::renderDataTable({
                   pageLength = nrow(graph_table)))
   })
 
+#### CONVERT ID
+
+output$IDtable <- DT::renderDataTable({
+  
+  res <- read_delim(input$convId_metabolites, delim = "\n", col_names = FALSE) %>% 
+    pull(1) %>%
+    fobitools::id_convert(to = input$convTo)
+  
+  DT::datatable(res,
+                filter = 'none',extensions = 'Buttons',
+                escape=FALSE,  rownames=TRUE, class = 'cell-border stripe',
+                options = list(
+                  dom = 'Bfrtip',
+                  buttons =
+                    list("copy", "print", list(
+                      extend="collection",
+                      buttons=list(list(extend = "csv",
+                                        filename = paste0(Sys.Date(), "_FOBI_ConvertID")),
+                                   list(extend = "excel",
+                                        filename = paste0(Sys.Date(), "_FOBI_ConvertID")),
+                                   list(extend = "pdf",
+                                        filename = paste0(Sys.Date(), "_FOBI_ConvertID"))),
+                      text = "Dowload")),
+                  order=list(list(2, "desc")),
+                  pageLength = nrow(res)))
+})
+
 #### ORA
 
 output$oratable <- DT::renderDataTable({
