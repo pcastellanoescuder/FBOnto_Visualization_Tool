@@ -36,26 +36,31 @@ tagList(
                                         value = TRUE
                           ),
                           
-                          conditionalPanel("input.plotnames",
+                          prettySwitch("showadvanced", "Advanced settings", fill = TRUE, status = "primary"),
+                          
+                          conditionalPanel("input.showadvanced",
                                            
-                                           radioButtons("labeltext",
-                                                        "Label type:",
-                                                        c("Label" = "label",
-                                                          "Text" = "text")
+                                           conditionalPanel("input.plotnames",
+                                                            
+                                                            radioButtons("labeltext",
+                                                                         "Label type:",
+                                                                         c("Label" = "label",
+                                                                           "Text" = "text")
+                                                            ),
+                                                            sliderInput("labelsize", 
+                                                                        "Label size", 
+                                                                        min = 1, 
+                                                                        max = 10, 
+                                                                        value = 5,
+                                                                        step = 1
+                                                            )
                                            ),
-                                           sliderInput("labelsize", 
-                                                       "Label size", 
-                                                       min = 1, 
-                                                       max = 10, 
-                                                       value = 5,
-                                                       step = 1
+                                           
+                                           sliderInput("a_node", "Nodes alfa", min = 0, max = 1, value = 1, step = 0.1),
+                                           
+                                           sliderInput("a_edge", "Edges alfa", min = 0, max = 1, value = 1, step = 0.1)
+                                           
                                            )
-                          ),
-                          
-                          sliderInput("a_node", "Nodes alfa", min = 0, max = 1, value = 1, step = 0.1),
-                          
-                          sliderInput("a_edge", "Edges alfa", min = 0, max = 1, value = 1, step = 0.1)
-                          
              ),
              
              mainPanel(
