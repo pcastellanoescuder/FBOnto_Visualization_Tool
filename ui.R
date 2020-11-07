@@ -28,10 +28,6 @@ tagList(
                                          selected = c("is_a", "BiomarkerOf")
                           ),
                           
-                          selectInput("layout", "Layout:", 
-                                      choices = c('fr', 'kk', 'lgl', 'graphopt', 'drl', 'linear')
-                          ),
-                          
                           checkboxInput("plotnames", "Network Labels", 
                                         value = TRUE
                           ),
@@ -56,6 +52,10 @@ tagList(
                                                             )
                                            ),
                                            
+                                           selectInput("layout", "Layout:", 
+                                                       choices = c('fr', 'kk', 'lgl', 'graphopt', 'drl', 'linear')
+                                           ),
+                                           
                                            sliderInput("a_node", "Nodes alfa", min = 0, max = 1, value = 1, step = 0.1),
                                            
                                            sliderInput("a_edge", "Edges alfa", min = 0, max = 1, value = 1, step = 0.1)
@@ -72,7 +72,11 @@ tagList(
     ## INTERACTIVE GRAPH TAB
     ## ==================================================================================== ## 
     
-    tabPanel("Interactive Graph", networkD3::simpleNetworkOutput("fobiD3graph", height = "600px")
+    tabPanel("Interactive Graph", 
+             
+             sliderInput("SizeFontD3", "Label size:", min = 10, max = 30, value = 15),
+             
+             networkD3::simpleNetworkOutput("fobiD3graph", height = "600px")
     ),
     
     ## ==================================================================================== ##
