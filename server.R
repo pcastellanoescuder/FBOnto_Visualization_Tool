@@ -63,12 +63,35 @@ output$ontologytable <- DT::renderDataTable({
   
   entity <- input$FOBI_name
   
-  graph_table <- graph_table %>% 
-    filter(from %in% entity | to %in% entity) %>% 
-    filter(Property %in% input$property) %>%
-    rename(Source = 1, Target = 2)
+  sub_table <- fobi %>% 
+    filter(name %in% entity) %>% # | is_a_name %in% entity | BiomarkerOf %in% entity | Contains %in% entity
+    select(-ChemSpider, -PubChemCID, -KEGG, -HMDB, -InChIKey, -InChICode, -alias) %>%
+    dplyr::relocate(FOBI, .before = name) %>%
+    rename("ID" = id_code,
+           "FOBI ID" = FOBI,
+           "Name" = name,
+           "SuperClass ID" = is_a_code,
+           "SuperClass" = is_a_name,
+           "BiomarkerOf ID" = id_BiomarkerOf,
+           "Contains ID" = id_Contains)
   
-  DT::datatable(graph_table, 
+  if(!("Contains" %in% input$property)){
+    sub_table <- sub_table %>%
+      select(-`Contains ID`, -Contains)
+  }
+  if(!("BiomarkerOf" %in% input$property)){
+    sub_table <- sub_table %>%
+      select(-`BiomarkerOf ID`, -BiomarkerOf)
+  }
+  if(!("is_a" %in% input$property)){
+    sub_table <- sub_table %>%
+      select(-`SuperClass ID`, -SuperClass)
+  }
+  
+  sub_table <- sub_table %>%
+    filter(!duplicated(.))
+  
+  DT::datatable(sub_table, 
                 filter = 'none',extensions = 'Buttons',
                 escape=FALSE,  rownames=FALSE, class = 'cell-border stripe',
                 options = list(
@@ -84,7 +107,7 @@ output$ontologytable <- DT::renderDataTable({
                                         filename = paste0(Sys.Date(), "_FOBI_table"))),
                       text = "Dowload")),
                   order=list(list(2, "desc")),
-                  pageLength = nrow(graph_table)))
+                  pageLength = nrow(sub_table)))
   })
 
 #### CONVERT ID

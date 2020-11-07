@@ -14,7 +14,7 @@ tagList(
     tabPanel("Graph", 
              sidebarPanel(width = 3,
                           
-                          selectizeInput("FOBI_name", 
+                          selectizeInput("FOBI_name",
                                          label = "Entity:",
                                          multiple = TRUE,
                                          choices = names, 

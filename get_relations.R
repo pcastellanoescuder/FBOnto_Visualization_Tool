@@ -1,5 +1,5 @@
 
-load("data/201106_fobi.RData")
+load("data/201106_fobi.RData") # obtained via `fobitools::parse_fobi()`
 
 names <- fobi %>%
   pull(name)
