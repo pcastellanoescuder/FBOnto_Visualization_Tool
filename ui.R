@@ -134,6 +134,12 @@ FOBI:030629",
                           
                           helpText(HTML("Note: can use metabolite names, FOBI, ChemSpider, KEGG, PubChemCID, InChIKey, InChICode and HMDB IDs")),
                           
+                          selectInput("fobi_sets",
+                                      "Check for over represented",
+                                      choices = c("Food groups" = 'foods',
+                                                  "Chemical classes" = 'chemicals'),
+                                      selected = 'foods'),
+                          
                           selectInput("correction_method_ora",
                                       "Correction method",
                                       choices = c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr"),

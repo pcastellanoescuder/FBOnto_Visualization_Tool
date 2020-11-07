@@ -122,7 +122,7 @@ output$oratable <- DT::renderDataTable({
     pull(1) %>%
     fobitools::id_convert(to = "FOBI") %>%
     pull(FOBI) %>%
-    fobitools::ora(method = input$correction_method_ora) %>%
+    fobitools::ora(fobi_sets = input$fobi_sets, method = input$correction_method_ora) %>%
     mutate(pvalue = round(pvalue, 4),
            pvalueAdj = round(pvalueAdj, 4)) %>%
     arrange(!desc(pvalueAdj))
@@ -152,7 +152,7 @@ output$oraplot <- renderPlot({
     pull(1) %>%
     fobitools::id_convert(to = "FOBI") %>%
     pull(FOBI) %>%
-    fobitools::ora(method = input$correction_method_ora) %>%
+    fobitools::ora(fobi_sets = input$fobi_sets, method = input$correction_method_ora) %>%
     mutate(pvalue = round(pvalue, 4),
            pvalueAdj = round(pvalueAdj, 4)) %>%
     arrange(!desc(pvalueAdj))
@@ -161,6 +161,7 @@ output$oraplot <- renderPlot({
     xlab("-log10(P-value)") +
     ylab("") +
     geom_col() +
+    # geom_label(aes(label = success)) +
     theme_bw() +
     theme(legend.position = "none",
           axis.text = element_text(size = 13),
