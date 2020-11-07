@@ -52,10 +52,22 @@ output$ontologyplot <- renderPlot({
       theme(legend.title = element_text(size = 18),
             legend.text = element_text(size = 16),
             legend.position = "bottom")
-    
-  }
-  
+    }
   })
+
+#### INTERACTIVE PLOT
+
+output$fobiD3graph <- networkD3::renderSimpleNetwork({
+  
+  entity <- input$FOBI_name
+  
+  fobi_links <- graph_table %>% 
+    filter(from %in% entity | to %in% entity) %>% 
+    filter(Property %in% input$property)
+  
+  simpleNetwork(fobi_links, fontSize = 15, zoom = TRUE, charge = -500, height = "800px")
+  
+})
 
 #### TABLE
 
