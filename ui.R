@@ -127,7 +127,8 @@ IQPNAANSBPBGFQ-UHFFFAOYSA-N
 XOAAWQZATWQOTB-UHFFFAOYSA-N
 OAIJSZIZWZSQBC-GYZMGTAESA-N
 HCAJEUSONLESMK-UHFFFAOYSA-N",
-                                        height = "220px"
+                                        height = "220px",
+                                        resize = "none"
                           ),
                           
                           helpText(HTML("Note: can use metabolite names, FOBI, ChemSpider, KEGG, PubChemCID, InChIKey, InChICode and HMDB IDs")),
@@ -166,7 +167,8 @@ FOBI:030450
 FOBI:030629",
                                         # cat("FOBI:030318", "FOBI:030653", "FOBI:030663", "FOBI:030342", "FOBI:030325", "FOBI:030375",
                                         #             "FOBI:030421", "FOBI:030431", "FOBI:030450", "FOBI:030629", sep = "\n"),
-                                        height = "220px"
+                                        height = "220px",
+                                        resize = "none"
                           ),
                           
                           helpText(HTML("Note: can use metabolite names, FOBI, ChemSpider, KEGG, PubChemCID, InChIKey, InChICode and HMDB IDs")),
@@ -199,17 +201,10 @@ FOBI:030629",
              ),
     
     ## ==================================================================================== ##
-    ## DOCUMENTATION TAB
-    ## ==================================================================================== ## 
-    
-    tabPanel("Documentation", includeMarkdown("")
-    ),
-    
-    ## ==================================================================================== ##
     ## CONTACT TAB
     ## ==================================================================================== ## 
     
-    tabPanel("Contact", includeMarkdown("")
+    tabPanel("Contact", includeMarkdown("contact.md")
     )
     
     ),
@@ -224,8 +219,8 @@ FOBI:030629",
              p(("Code available on Github:"), a("https://github.com/pcastellanoescuder/FOBI_Visualization_Tool", 
                                                 href = "https://github.com/pcastellanoescuder/FOBI_Visualization_Tool"), align = "center", width = 4),
              p(("Please cite:"), a("https://doi.org/10.1093/databa/baaa033", href = "https://doi.org/10.1093/databa/baaa033"), align = "center", width = 4)
-  )
-
+  )#,
+  
   # tags$head(includeScript("google-analytics.js"))
   
   )

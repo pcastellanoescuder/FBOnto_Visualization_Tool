@@ -82,6 +82,8 @@ output$fobiD3graph <- networkD3::renderSimpleNetwork({
     filter(from %in% entity | to %in% entity) %>% 
     filter(Property %in% input$property)
   
+  validate(need(nrow(fobi_links) > 1, "There aren't connections between selected entities and properties."))
+  
   simpleNetwork(fobi_links, fontSize = input$SizeFontD3, zoom = TRUE, charge = input$net_charge, height = "800px")
   
 })
