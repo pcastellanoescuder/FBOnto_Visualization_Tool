@@ -85,11 +85,20 @@ tagList(
     ## ==================================================================================== ## 
     
     tabPanel("Interactive Graph", 
-             
-             sliderInput("SizeFontD3", "Label size:", min = 10, max = 30, value = 15),
-             
-             networkD3::simpleNetworkOutput("fobiD3graph", height = "600px")
-    ),
+             sidebarPanel(width = 3,
+                          
+                          knobInput("SizeFontD3", "Label size:", min = 10, max = 30, value = 15),
+                          
+                          knobInput("net_charge", "Network charge:", min = -500, max = -1, value = -200),
+                          
+                          helpText("This value represents the strength", 
+                                   "of the node repulsion")
+                          ),
+             mainPanel(
+               
+               networkD3::simpleNetworkOutput("fobiD3graph", height = "600px")
+             )
+             ),
     
     ## ==================================================================================== ##
     ## TABLE TAB
@@ -190,17 +199,17 @@ FOBI:030629",
              ),
     
     ## ==================================================================================== ##
-    ## HOME TAB
+    ## DOCUMENTATION TAB
     ## ==================================================================================== ## 
     
-    tabPanel("Terms & Conditions", includeMarkdown("TERMS.md")
+    tabPanel("Documentation", includeMarkdown("")
     ),
     
     ## ==================================================================================== ##
-    ## LICENSE TAB
+    ## CONTACT TAB
     ## ==================================================================================== ## 
     
-    tabPanel("License", includeMarkdown("LICENSE")
+    tabPanel("Contact", includeMarkdown("")
     )
     
     ),

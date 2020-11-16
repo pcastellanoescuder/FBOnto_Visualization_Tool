@@ -82,7 +82,7 @@ output$fobiD3graph <- networkD3::renderSimpleNetwork({
     filter(from %in% entity | to %in% entity) %>% 
     filter(Property %in% input$property)
   
-  simpleNetwork(fobi_links, fontSize = input$SizeFontD3, zoom = TRUE, charge = -200, height = "800px")
+  simpleNetwork(fobi_links, fontSize = input$SizeFontD3, zoom = TRUE, charge = input$net_charge, height = "800px")
   
 })
 
