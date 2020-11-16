@@ -39,6 +39,11 @@ tagList(
                                         value = TRUE
                           ),
                           
+                          downloadButton("downloadPlot","Download Plot"),
+                          
+                          br(),
+                          br(),
+                          
                           prettySwitch("showadvanced", "Advanced settings", fill = TRUE, status = "primary"),
                           
                           conditionalPanel("input.showadvanced",

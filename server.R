@@ -3,13 +3,18 @@ function(input, output, session) {
  
 #### PLOT
   
-output$ontologyplot <- renderPlot({
+fobi_network <- reactive({
+  
+  validate(need(!is.null(input$FOBI_name), "Select one or more entities."))
+  validate(need(!is.null(input$property), "Select one or more properties."))
   
   entity <- input$FOBI_name
   
   graph_table <- graph_table %>% 
     filter(from %in% entity | to %in% entity) %>% 
     filter(Property %in% input$property)
+  
+  validate(need(nrow(graph_table) > 1, "There aren't connections between selected entities and properties."))
   
   graph <- as_tbl_graph(graph_table) %>%
       mutate(Interactions = centrality_degree(mode = 'in'))
@@ -18,7 +23,7 @@ output$ontologyplot <- renderPlot({
     
     if (input$labeltext == "label"){
       
-      ggraph(graph, layout = input$layout) +
+      networkplot <- ggraph(graph, layout = input$layout) +
         geom_edge_fan(aes(alpha = ..index..), show.legend = FALSE) +
         geom_edge_link(aes(colour = Property), alpha = input$a_edge) +
         geom_node_point(aes(size = Interactions), colour = 'snow4', alpha = input$a_node) +
@@ -30,7 +35,7 @@ output$ontologyplot <- renderPlot({
       
     } else {
       
-      ggraph(graph, layout = input$layout) +
+      networkplot <- ggraph(graph, layout = input$layout) +
         geom_edge_fan(aes(alpha = ..index..), show.legend = FALSE) +
         geom_edge_link(aes(colour = Property), alpha = input$a_edge) +
         geom_node_point(aes(size = Interactions), colour = 'snow4', alpha = input$a_node) +
@@ -44,7 +49,7 @@ output$ontologyplot <- renderPlot({
     
   } else {
     
-    ggraph(graph, layout = input$layout) +
+    networkplot <- ggraph(graph, layout = input$layout) +
       geom_edge_fan(aes(alpha = ..index..), show.legend = FALSE) +
       geom_edge_link(aes(colour = Property), alpha = input$a_edge) +
       geom_node_point(aes(size = Interactions), colour = 'snow4', alpha = input$a_node) +
@@ -52,8 +57,20 @@ output$ontologyplot <- renderPlot({
       theme(legend.title = element_text(size = 18),
             legend.text = element_text(size = 16),
             legend.position = "bottom")
-    }
+  }
+  
+  return(networkplot)
+    
   })
+
+output$ontologyplot <- renderPlot({fobi_network()})
+
+output$downloadPlot <- downloadHandler(
+  filename = function(){paste0(Sys.Date(), "_FOBI_network", ".png")},
+  content = function(file){
+    ggsave(file, plot = fobi_network(), device = "png", dpi = 200, width = 15, height = 10)
+    }
+  )
 
 #### INTERACTIVE PLOT
 
