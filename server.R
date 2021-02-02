@@ -255,6 +255,95 @@ output$oraplot <- renderPlot({
   
 })
 
+#### FOOD ANNOTATION
+
+output$raw_foods_file <- DT::renderDataTable({
+  
+  inFile <- input$raw_foods
+  
+  if(is.null(inFile))
+    return(NULL)
+  
+  file.rename(inFile$datapath, paste(inFile$datapath, ".xlsx", sep = ""))
+  raw_fods <- read_excel(paste(inFile$datapath, ".xlsx", sep = ""), 1)
+
+  DT::datatable(raw_fods,
+                filter = 'none',extensions = 'Buttons',
+                escape = FALSE,  rownames = FALSE, class = 'cell-border stripe',
+                options = list(pageLength = 10))
+  
+})
+
+##
+
+food_annotation <- reactive({
+  
+  inFile <- input$raw_foods
+  
+  if(is.null(inFile))
+    return(NULL)
+  
+  file.rename(inFile$datapath, paste(inFile$datapath, ".xlsx", sep = ""))
+  annotated_foods <- read_excel(paste(inFile$datapath, ".xlsx", sep = ""), 1) %>%
+    fobitools::annotate_foods(similarity = input$similarity)
+  
+  unannotated_foods <- annotated_foods$unannotated
+  annotated_foods <- annotated_foods$annotated
+  
+  return(list(annotated_foods = annotated_foods, unannotated_foods = unannotated_foods))
+  
+})
+
+##
+
+output$annotated_foods_file <- DT::renderDataTable({
+  
+  annotated_fods <- food_annotation()$annotated_foods
+  
+  DT::datatable(annotated_fods,
+                filter = 'none',extensions = 'Buttons',
+                escape = FALSE,  rownames = FALSE, class = 'cell-border stripe',
+                options = list(
+                  dom = 'Bfrtip',
+                  buttons =
+                    list("copy", "print", list(
+                      extend="collection",
+                      buttons=list(list(extend = "csv",
+                                        filename = paste0(Sys.Date(), "_FOBI_annotated_foods")),
+                                   list(extend = "excel",
+                                        filename = paste0(Sys.Date(), "_FOBI_annotated_foods")),
+                                   list(extend = "pdf",
+                                        filename = paste0(Sys.Date(), "_FOBI_annotated_foods"))),
+                      text = "Dowload")),
+                  order=list(list(2, "desc")),
+                  pageLength = nrow(annotated_fods)))
+  })
+
+##
+
+output$unannotated_foods_file <- DT::renderDataTable({
+  
+  unannotated_foods <- food_annotation()$unannotated_foods
+  
+  DT::datatable(unannotated_foods,
+                filter = 'none',extensions = 'Buttons',
+                escape = FALSE,  rownames = TRUE, class = 'cell-border stripe',
+                options = list(
+                  dom = 'Bfrtip',
+                  buttons =
+                    list("copy", "print", list(
+                      extend="collection",
+                      buttons=list(list(extend = "csv",
+                                        filename = paste0(Sys.Date(), "_FOBI_unannotated_foods")),
+                                   list(extend = "excel",
+                                        filename = paste0(Sys.Date(), "_FOBI_unannotated_foods")),
+                                   list(extend = "pdf",
+                                        filename = paste0(Sys.Date(), "_FOBI_unannotated_foods"))),
+                      text = "Dowload")),
+                  order=list(list(2, "desc")),
+                  pageLength = nrow(unannotated_foods)))
+})
+
 }
 
  

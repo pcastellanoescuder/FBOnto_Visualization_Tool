@@ -213,6 +213,47 @@ IQPNAANSBPBGFQ-UHFFFAOYSA-N",
              ),
     
     ## ==================================================================================== ##
+    ## FOOD ANNOTATION TAB
+    ## ==================================================================================== ## 
+    
+    tabPanel("Dietary Text Annotation", 
+             
+             sidebarPanel(width = 3,
+                          
+                          fileInput("raw_foods", "Select an xlsx file:",
+                                    accept = c(".xlsx")
+                          ),
+                          
+                          helpText("Note: Input must be a two column data frame. First column must contain IDs",
+                                   "and the second column must contain food items (it can be a word or a string)"),
+                          
+                          # checkboxInput("exampleANNO", "Use example data", value = FALSE),
+                          
+                          sliderInput("similarity", "Similarity", min = 0, max = 1, value = 0.85),
+                          
+                          helpText("This value indicates the semantic similarity cutoff used at the last layer", 
+                                   "of the text mining pipeline. 1 = exact match; 0 = very poor match.",
+                                   "Values below 0.85 are not recommended")
+                          
+                          ),
+             
+             mainPanel(
+               tabsetPanel(
+                 
+                 tabPanel("Input data",
+                          DT::dataTableOutput("raw_foods_file")
+                 ),
+                 tabPanel("Annotated data",
+                          DT::dataTableOutput("annotated_foods_file")
+                 ),
+                 tabPanel("Unannotated data",
+                          DT::dataTableOutput("unannotated_foods_file")
+                 )
+               )
+             )
+             ),
+    
+    ## ==================================================================================== ##
     ## CONTACT TAB
     ## ==================================================================================== ## 
     
@@ -223,7 +264,8 @@ IQPNAANSBPBGFQ-UHFFFAOYSA-N",
   
   ## ==================================================================================== ##
   ## FOOTER
-  ## ==================================================================================== ##              
+  ## ==================================================================================== ##  
+  
   footer = p(hr(), p("ShinyApp created by ", a(HTML("<b>Pol Castellano Escuder</b>"), href = "https://pcastellanoescuder.github.io"), align = "center", width = 4),
              p(("Statistics and Bioinformatics Lab and Biomarkers and Nutritional & Food Metabolomics Lab from "), align = "center", width = 4),
              p(("University of Barcelona"), align = "center", width = 4),
