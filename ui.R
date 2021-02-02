@@ -227,9 +227,9 @@ IQPNAANSBPBGFQ-UHFFFAOYSA-N",
   footer = p(hr(), p("ShinyApp created by ", a(HTML("<b>Pol Castellano Escuder</b>"), href = "https://pcastellanoescuder.github.io"), align = "center", width = 4),
              p(("Statistics and Bioinformatics Lab and Biomarkers and Nutritional & Food Metabolomics Lab from "), align = "center", width = 4),
              p(("University of Barcelona"), align = "center", width = 4),
-             p(("Copyright (C) 2020, code licensed under GPLv3"), align = "center", width = 4),
-             p(("Code available on Github:"), a("https://github.com/pcastellanoescuder/FOBI_Visualization_Tool", 
-                                                href = "https://github.com/pcastellanoescuder/FOBI_Visualization_Tool"), align = "center", width = 4),
+             p(("Copyright (C) 2021, code licensed under GPLv3"), align = "center", width = 4),
+             p(("Code available on Github:"), a("https://github.com/pcastellanoescuder/fobitoolsGUI", 
+                                                href = "https://github.com/pcastellanoescuder/fobitoolsGUI"), align = "center", width = 4),
              p(("Please cite:"), a("https://doi.org/10.1093/databa/baaa033", href = "https://doi.org/10.1093/databa/baaa033"), align = "center", width = 4)
   )#,
   

@@ -2,7 +2,7 @@
 
 ### Report a bug:
 
-For any issue related to the web app, we encourage users to use the GitHub issue chanel. You can access it at the top of this page or at the link: https://github.com/pcastellanoescuder/FOBI_Visualization_Tool/issues
+For any issue related to the web app, we encourage users to use the GitHub issue channel. You can access it at the link: https://github.com/pcastellanoescuder/fobitoolsGUI/issues
 
 ### Other questions:
 

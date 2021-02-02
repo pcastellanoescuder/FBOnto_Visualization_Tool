@@ -1,4 +1,4 @@
-# Food-Biomarker Ontology Visualization Tool
+# fobitoolsGUI
 
 <!-- badges: start --> 
 
@@ -11,7 +11,7 @@
 
 ## Overview
 
-[Food-Biomarker Ontology (FOBI)](https://doi.org/10.1093/databa/baaa033) Visualization Tool is a web-based resource focused on interactive visualization of the FOBI structure. Functionalities provided in this tool are listed below:
+[Food-Biomarker Ontology (FOBI)](https://doi.org/10.1093/databa/baaa033) `fobitoolsGUI` is a web-based resource focused on interactive visualization of the FOBI structure. Functionalities provided in this tool are listed below:
 
   - Static Network Visualization
   - Dynamic Network Visualization
@@ -20,7 +20,7 @@
   - Classical Enrichment Analysis: Over representation analysis using FOBI chemical classes as sets (tables and plots provided)
   - **Food Enrichment Analysis**: Over representation analysis using FOBI food groups as sets (tables and plots provided)
 
-FOBI Visualization Tool is hosted in [shinyapps.io](https://www.shinyapps.io) and it's available at https://polcastellano.shinyapps.io/FOBI_Visualization_Tool/
+`fobitoolsGUI` is hosted in [shinyapps.io](https://www.shinyapps.io) and it's available at https://polcastellano.shinyapps.io/FOBI_Visualization_Tool/
 
 ## Citation
 
@@ -28,5 +28,5 @@ FOBI Visualization Tool is hosted in [shinyapps.io](https://www.shinyapps.io) an
 
 ## Code of Conduct
 
-Please note that the 'FOBI Visualization Tool' project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.  
+Please note that the 'fobitoolsGUI' project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.  
 
