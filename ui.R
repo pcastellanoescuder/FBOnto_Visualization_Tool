@@ -145,6 +145,8 @@ IQPNAANSBPBGFQ-UHFFFAOYSA-N",
                           
                           helpText(HTML("Note<sup>2</sup>: if you're only checking one metabolite, please click 'Enter' to create an empty line below")),
                           
+                          checkboxInput("exampleID", "Use example data", value = FALSE),
+                          
                           selectInput("convTo",
                                       "Convert IDs to:",
                                       choices = c("metaboliteNames", "FOBI", "ChemSpider", "KEGG", "PubChemCID", "InChIKey", "InChICode", "HMDB"),
@@ -178,6 +180,8 @@ IQPNAANSBPBGFQ-UHFFFAOYSA-N",
                           ),
                           
                           helpText("Note: can use metabolite names, FOBI, ChemSpider, KEGG, PubChemCID, InChIKey, InChICode and HMDB IDs"),
+                          
+                          checkboxInput("exampleORA", "Use example data", value = FALSE),
                           
                           selectInput("subOntology",
                                       "Select a FOBI sub-ontology",

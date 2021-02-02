@@ -129,21 +129,26 @@ output$ontologytable <- DT::renderDataTable({
 
 #### CONVERT ID
 
+observe({
+  
+  if (input$exampleID){
+    updateTextAreaInput(session, "convId_metabolites", value = paste(fobitools::idmap$InChIKey[1:10], collapse = "\n"))
+  } 
+  else {
+    updateTextAreaInput(session, "convId_metabolites", value = "")
+  }
+  
+})
+
+##
+
 output$IDtable <- DT::renderDataTable({
   
-  convId_metabolites <- input$convId_metabolites
+  validate(need(input$convId_metabolites != "", "Select one or more entities."))
   
-  validate(need(convId_metabolites != "", "Select one or more entities."))
-  
-  # if(length(convId_metabolites) == 1) {
-    # res <- convId_metabolites %>%
-      # fobitools::id_convert(to = input$convTo)
-  # } 
-  # else {
-    res <- read_delim(convId_metabolites, delim = "\n", col_names = FALSE) %>%
-      pull(1) %>%
-      fobitools::id_convert(to = input$convTo)
-  # }
+  res <- read_delim(input$convId_metabolites, delim = "\n", col_names = FALSE) %>%
+    pull(1) %>%
+    fobitools::id_convert(to = input$convTo)
     
   DT::datatable(res,
                 filter = 'none',extensions = 'Buttons',
@@ -166,16 +171,52 @@ output$IDtable <- DT::renderDataTable({
 
 #### ORA
 
-output$oratable <- DT::renderDataTable({
+observe({
   
-  res <- read_delim(input$ora_metabolites, delim = "\n", col_names = FALSE) %>% 
+  if (input$exampleORA){
+    updateTextAreaInput(session, "metaboliteList", value = paste(fobitools::idmap$FOBI[1:70], collapse = "\n"))
+    updateTextAreaInput(session, "metaboliteUniverse", value = paste(fobitools::idmap$FOBI[1:200], collapse = "\n"))
+  } 
+  else {
+    updateTextAreaInput(session, "metaboliteList", value = "")
+    updateTextAreaInput(session, "metaboliteUniverse", value = "")
+  }
+  
+})
+
+##
+
+food_enrichment <- reactive({
+  
+  validate(need(input$metaboliteList != "", "Select one or more entities for metaboliteList."))
+  validate(need(input$metaboliteUniverse != "", "Select one or more entities for metaboliteUniverse."))
+  
+  metaboliteList <- read_delim(input$metaboliteList, delim = "\n", col_names = FALSE) %>% 
     pull(1) %>%
     fobitools::id_convert(to = "FOBI") %>%
-    pull(FOBI) %>%
-    fobitools::ora(fobi_sets = input$fobi_sets, method = input$correction_method_ora) %>%
-    mutate(pvalue = round(pvalue, 4),
-           pvalueAdj = round(pvalueAdj, 4)) %>%
-    arrange(!desc(pvalueAdj))
+    pull(FOBI) 
+  
+  metaboliteUniverse <- read_delim(input$metaboliteUniverse, delim = "\n", col_names = FALSE) %>% 
+    pull(1) %>%
+    fobitools::id_convert(to = "FOBI") %>%
+    pull(FOBI)
+  
+  res <- fobitools::ora(metaboliteList,
+                        metaboliteUniverse,
+                        subOntology = input$subOntology,
+                        pvalCutoff = input$pvalcutoff,
+                        adjust = input$adj_pval) %>%
+    arrange(-desc(pvalueAdj))
+  
+  return(res)
+  
+})
+
+##
+
+output$oratable <- DT::renderDataTable({
+  
+  res <- food_enrichment()
   
   DT::datatable(res,
                 filter = 'none',extensions = 'Buttons',
@@ -194,24 +235,16 @@ output$oratable <- DT::renderDataTable({
                       text = "Dowload")),
                   order=list(list(2, "desc")),
                   pageLength = nrow(res)))
-})
+  
+  })
+
+##
 
 output$oraplot <- renderPlot({
   
-  res <- read_delim(input$ora_metabolites, delim = "\n", col_names = FALSE) %>%
-    pull(1) %>%
-    fobitools::id_convert(to = "FOBI") %>%
-    pull(FOBI) %>%
-    fobitools::ora(input$metaboliteList,
-                   input$metaboliteUniverse,
-                   subOntology = input$subOntology,
-                   pvalCutoff = input$pvalcutoff, 
-                   adjust = input$adj_pval) %>%
-    mutate(pvalue = round(pvalue, 4),
-           pvalueAdj = round(pvalueAdj, 4)) %>%
-    arrange(!desc(pvalueAdj))
+  res <- food_enrichment()
   
-  ggplot(res, aes(x = -log10(pvalue), y = reorder(description, -log10(pvalue)), fill = -log10(pvalue), label = classId)) +
+  ggplot(res, aes(x = -log10(pvalue), y = reorder(className, -log10(pvalue)), fill = -log10(pvalue), label = classId)) +
     xlab("-log10(P-value)") +
     ylab("") +
     geom_col() +
