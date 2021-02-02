@@ -1,5 +1,6 @@
 
 load("data/201106_fobi.RData") # obtained via `fobitools::parse_fobi()`
+load("data/foods.rda") # obtained via `fobitools::parse_fobi(terms = "FOBI:0001", get = "des")`
 
 names <- fobi %>%
   pull(name)

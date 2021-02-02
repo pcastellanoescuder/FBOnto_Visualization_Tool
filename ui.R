@@ -4,7 +4,7 @@ source("get_relations.R")
 tagList(
   
   navbarPage(
-    title = "Food-Biomarker Ontology Visualization Tool",
+    title = "fobitoolsGUI",
     theme = shinytheme("spacelab"),
     
     ## ==================================================================================== ##
@@ -45,38 +45,48 @@ tagList(
                           br(),
                           
                           prettySwitch("showadvanced", "Advanced settings", fill = TRUE, status = "primary"),
-                          
+
                           conditionalPanel("input.showadvanced",
-                                           
+
                                            conditionalPanel("input.plotnames",
-                                                            
+
                                                             radioButtons("labeltext",
                                                                          "Label type:",
                                                                          c("Label" = "label",
                                                                            "Text" = "text")
                                                             ),
-                                                            sliderInput("labelsize", 
-                                                                        "Label size", 
-                                                                        min = 1, 
-                                                                        max = 10, 
+                                                            sliderInput("labelsize",
+                                                                        "Label size",
+                                                                        min = 1,
+                                                                        max = 10,
                                                                         value = 5,
                                                                         step = 1
                                                             )
                                            ),
+
+                                           selectInput("layout", "Layout:",
+                                                       choices = c('sugiyama', 'fr', 'kk', 'lgl', 'graphopt', 'drl', 'linear')
+                                                       ),
                                            
-                                           selectInput("layout", "Layout:", 
-                                                       choices = c('fr', 'kk', 'lgl', 'graphopt', 'drl', 'linear')
-                                           ),
+                                           sliderInput("pointSize", "Node size", min = 1, max = 15, value = 4, step = 1),
                                            
-                                           sliderInput("a_node", "Nodes alfa", min = 0, max = 1, value = 1, step = 0.1),
+                                           prettySwitch("curved", "Curved edges", fill = TRUE, status = "primary"),
                                            
-                                           sliderInput("a_edge", "Edges alfa", min = 0, max = 1, value = 1, step = 0.1)
+                                           prettySwitch("legend", "Show legend", fill = TRUE, status = "primary"),
+
+                                           conditionalPanel("input.legend",
                                            
-                                           )
-             ),
+                                                            selectInput("legendPos", "Legend position",
+                                                                        choices = c('bottom', 'top', 'right', 'left')
+                                                                        ),
+                                           
+                                                            sliderInput("legendSize", "Legend size", min = 12, max = 20, value = 16, step = 1)
+                                                            )
+                          )
+                          ),
              
              mainPanel(
-               plotOutput("ontologyplot", height = "750px", width = "1000px")
+               plotOutput("ontologyplot", height = "650px", width = "1000px")
                )
              ),
     
@@ -153,34 +163,30 @@ HCAJEUSONLESMK-UHFFFAOYSA-N",
              
              sidebarPanel(width = 3,
                           
-                          textAreaInput("ora_metabolites", 
-                                        label = "Enter your metabolites here:",
-                                        value = "FOBI:030318
-FOBI:030653
-FOBI:030663
-FOBI:030342
-FOBI:030325
-FOBI:030375
-FOBI:030421
-FOBI:030431
-FOBI:030450
-FOBI:030629",
-                                        # cat("FOBI:030318", "FOBI:030653", "FOBI:030663", "FOBI:030342", "FOBI:030325", "FOBI:030375",
-                                        #             "FOBI:030421", "FOBI:030431", "FOBI:030450", "FOBI:030629", sep = "\n"),
+                          textAreaInput("metaboliteList", 
+                                        label = "Enter your metabolite list here:",
                                         height = "220px",
                                         resize = "none"
                           ),
                           
-                          helpText(HTML("Note: can use metabolite names, FOBI, ChemSpider, KEGG, PubChemCID, InChIKey, InChICode and HMDB IDs")),
+                          textAreaInput("metaboliteUniverse", 
+                                        label = "Enter your metabolite universe here:",
+                                        height = "220px",
+                                        resize = "none"
+                          ),
                           
-                          selectInput("fobi_sets",
-                                      "Check for over represented",
-                                      choices = c("Food groups" = 'foods',
-                                                  "Chemical classes" = 'chemicals'),
-                                      selected = 'foods'),
+                          helpText("Note: can use metabolite names, FOBI, ChemSpider, KEGG, PubChemCID, InChIKey, InChICode and HMDB IDs"),
                           
-                          selectInput("correction_method_ora",
-                                      "Correction method",
+                          selectInput("subOntology",
+                                      "Select a FOBI sub-ontology",
+                                      choices = c("Food" = 'food',
+                                                  "Biomarker" = 'biomarker'),
+                                      selected = 'food'),
+                          
+                          numericInput("pvalcutoff", "p-value cutoff", min = 0, max = 1, value = 0.01),
+                          
+                          selectInput("adj_pval",
+                                      "p-value adjustment method",
                                       choices = c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr"),
                                       selected = "fdr"
                                       )
