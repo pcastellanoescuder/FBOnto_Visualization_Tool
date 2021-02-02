@@ -1,9 +1,9 @@
-# fobitoolsGUI
+# Welcome to fobitoolsGUI!
 
 <!-- badges: start --> 
 
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
-[![Last Commit](https://img.shields.io/github/last-commit/pcastellanoescuder/FOBI_Visualization_Tool.svg)](https://github.com/pcastellanoescuder/FOBI_Visualization_Tool/commits/master)
+[![Last Commit](https://img.shields.io/github/last-commit/pcastellanoescuder/fobitoolsGUI.svg)](https://github.com/pcastellanoescuder/fobitoolsGUI/commits/master)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![DOI](https://img.shields.io/badge/DOI-https%3A%2F%2Fdoi.org%2F10.1093%2Fdataba%2Fbaaa033-blue)](https://doi.org/10.1093/databa/baaa033)  
 
@@ -11,16 +11,18 @@
 
 ## Overview
 
-[Food-Biomarker Ontology (FOBI)](https://doi.org/10.1093/databa/baaa033) `fobitoolsGUI` is a web-based resource focused on interactive visualization of the FOBI structure. Functionalities provided in this tool are listed below:
+`fobitoolsGUI` is a web-based tool based on the [`fobitools` R package](https://github.com/pcastellanoescuder/fobitools). This user-friendly web interface is focused on the [FOBI](https://github.com/pcastellanoescuder/FoodBiomarkerOntology) ontology visualization and the **food enrichment analysis** for nutrimetabolomic studies. Several functionalities for interacting with FOBI are provided here:
 
-  - Static Network Visualization
-  - Dynamic Network Visualization
+  - FOBI graph static visualization
+  - FOBI graph dynamic visualization
   - Extract FOBI information in a downloadable table
   - Compound ID conversion (among metabolite names, FOBI, ChemSpider, KEGG, PubChemCID, InChIKey, InChICode and HMDB IDs)
-  - Classical Enrichment Analysis: Over representation analysis using FOBI chemical classes as sets (tables and plots provided)
-  - **Food Enrichment Analysis**: Over representation analysis using FOBI food groups as sets (tables and plots provided)
+  - Biological significance analysis via a classical over representation analysis:
+      - Chemical class enrichment analysis: Over representation analysis using FOBI chemical classes as sets (tables and plots provided)
+      - **Food enrichment analysis**: Over representation analysis using FOBI food groups as sets (tables and plots provided)
+  - Text mining function for annotating dietary data
 
-`fobitoolsGUI` is hosted in [shinyapps.io](https://www.shinyapps.io) and it's available at https://polcastellano.shinyapps.io/FOBI_Visualization_Tool/
+`fobitoolsGUI` is hosted at our own server and it's available at http://webapps.nutrimetabolomics.com/fobitoolsGUI.
 
 ## Citation
 

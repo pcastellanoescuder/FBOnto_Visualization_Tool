@@ -5,8 +5,8 @@ account: polcastellano
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 1311822
-bundleId: 3831663
+bundleId: 4172943
 url: https://polcastellano.shinyapps.io/FOBI_Visualization_Tool/
-when: 1604763715.71574
+when: 1612302466.4345
 asMultiple: FALSE
 asStatic: FALSE
