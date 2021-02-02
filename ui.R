@@ -127,21 +127,23 @@ tagList(
                           
                           textAreaInput("convId_metabolites", 
                                         label = "Enter your metabolites here:",
-                                        value = "PHIQHXFUZVPYII-LURJTMIESA-N
+                                        value = "TYNQWWGVEGFKRU-AJDPQWBVSA-N
+DMASLKHVQRHNES-FKKUPVFPSA-N
+PHIQHXFUZVPYII-LURJTMIESA-N
 QVWAEZJXDYOKEH-UHFFFAOYSA-N
 PFTAWBLQPZVEMU-DZGCQCFKSA-N
 FEWJPZIEWOKRBE-JCYAYHJZSA-N
 UYPYRKYUKCHHIB-UHFFFAOYSA-N
 CQOVPNPJLQNMDC-ZETCQYMHSA-N
-IQPNAANSBPBGFQ-UHFFFAOYSA-N
-XOAAWQZATWQOTB-UHFFFAOYSA-N
-OAIJSZIZWZSQBC-GYZMGTAESA-N
-HCAJEUSONLESMK-UHFFFAOYSA-N",
+PQBAWAQIRZIWIV-UHFFFAOYSA-N
+IQPNAANSBPBGFQ-UHFFFAOYSA-N",
                                         height = "220px",
                                         resize = "none"
                           ),
                           
-                          helpText(HTML("Note: can use metabolite names, FOBI, ChemSpider, KEGG, PubChemCID, InChIKey, InChICode and HMDB IDs")),
+                          helpText(HTML("Note<sup>1</sup>: can use metabolite names, FOBI, ChemSpider, KEGG, PubChemCID, InChIKey, InChICode and HMDB IDs")),
+                          
+                          helpText(HTML("Note<sup>2</sup>: if you're only checking one metabolite, please click 'Enter' to create an empty line below")),
                           
                           selectInput("convTo",
                                       "Convert IDs to:",

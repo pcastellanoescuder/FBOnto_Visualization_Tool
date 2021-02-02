@@ -1,6 +1,6 @@
 
 function(input, output, session) {
- 
+  
 #### PLOT
   
 fobi_network <- reactive({
@@ -131,10 +131,20 @@ output$ontologytable <- DT::renderDataTable({
 
 output$IDtable <- DT::renderDataTable({
   
-  res <- read_delim(input$convId_metabolites, delim = "\n", col_names = FALSE) %>% 
-    pull(1) %>%
-    fobitools::id_convert(to = input$convTo)
+  convId_metabolites <- input$convId_metabolites
   
+  validate(need(convId_metabolites != "", "Select one or more entities."))
+  
+  # if(length(convId_metabolites) == 1) {
+    # res <- convId_metabolites %>%
+      # fobitools::id_convert(to = input$convTo)
+  # } 
+  # else {
+    res <- read_delim(convId_metabolites, delim = "\n", col_names = FALSE) %>%
+      pull(1) %>%
+      fobitools::id_convert(to = input$convTo)
+  # }
+    
   DT::datatable(res,
                 filter = 'none',extensions = 'Buttons',
                 escape=FALSE,  rownames=TRUE, class = 'cell-border stripe',
@@ -152,7 +162,7 @@ output$IDtable <- DT::renderDataTable({
                       text = "Dowload")),
                   order = list(list(2, "desc")),
                   pageLength = nrow(res)))
-})
+  })
 
 #### ORA
 
