@@ -1,5 +1,4 @@
 source("helpers.R")
-source("get_relations.R")
 
 tagList(
   
@@ -24,8 +23,8 @@ tagList(
                           selectizeInput("FOBI_name",
                                          label = "Entity:",
                                          multiple = TRUE,
-                                         choices = names, 
-                                         selected = c("4,5-dicaffeoylquinic acid", "Quinic acids and derivatives", "Cyclitols and derivatives")
+                                         choices = NULL, 
+                                         selected = NULL
                           ), 
                           
                           selectizeInput("get_graph", 

@@ -2,7 +2,7 @@
 
 ### Report a bug:
 
-For any issue related to the web app, we encourage users to use the GitHub issue channel. You can access it at the link: https://github.com/pcastellanoescuder/fobitoolsGUI/issues
+For any issue related to the web app, we encourage users to use the GitHub issue channel. You can access it at the link: https://github.com/nutrimetabolomics/fobitoolsGUI/issues
 
 ### Other questions:
 

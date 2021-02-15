@@ -1,9 +1,11 @@
+
 library(tidyverse)
 library(ggraph)
 library(tidygraph)
 library(ggrepel)
 library(shinythemes)
 library(fobitools)
+library(ontologyIndex)
 library(shinyWidgets)
 library(networkD3)
 library(readxl)
