@@ -8,42 +8,28 @@ fobi_network <- reactive({
   validate(need(!is.null(input$FOBI_name), "Select one or more entities."))
   validate(need(!is.null(input$property), "Select one or more properties."))
   
-  entity <- input$FOBI_name
+  terms_code <- fobitools::fobi %>%
+    filter(name %in% input$FOBI_name) %>%
+    pull(id_code)
   
-  graph_table <- graph_table %>% 
-    filter(from %in% entity | to %in% entity) %>% 
-    filter(Property %in% input$property)
+  get_graph <- input$get_graph
   
-  validate(need(nrow(graph_table) > 1, "There aren't connections between selected entities and properties."))
-  
-  graph <- as_tbl_graph(graph_table) %>%
-    mutate(subOntology = ifelse(name %in% foods$name, "Food", "Biomarker"),
-           subOntology = ifelse(name == "Foods", "Food", subOntology))
-  
-  cols_nodes <- c("Biomarker" = "#440154FF", 
-                  "Food" = "#FDE725FF") # viridis palette
-  
-  cols_edges <- c("is_a" = "#287C8EFF", 
-                  "BiomarkerOf" = "#75D054FF", 
-                  "Contains" = "#E3E418FF") # viridis palette
-  
-  networkplot <- ggraph(graph, layout = input$layout) +
-    {if(!input$curved) geom_edge_link(aes(color = Property), end_cap = circle(2.5, "mm"), 
-                                arrow = arrow(length = unit(2.5, "mm"), type = "closed"),
-                                show.legend = input$legend)} +
-    {if(input$curved) geom_edge_arc(aes(color = Property), end_cap = circle(2.5, "mm"),
-                              arrow = arrow(length = unit(2.5, "mm"), type = "closed"),
-                              strength = 0.1, show.legend = input$legend)} +
-    geom_node_point(aes(color = subOntology, shape = subOntology), size = input$pointSize, show.legend = FALSE) +
-    {if(input$plotnames & input$labeltext == "label") geom_node_label(aes(label = name), color = 'black', size = input$labelsize, repel = TRUE, show.legend = FALSE)} +
-    {if(input$plotnames & input$labeltext != "label") geom_node_text(aes(label = name), color = 'black', size = input$labelsize, repel = TRUE, show.legend = FALSE)} +
-    scale_color_manual(values = cols_nodes, guide = "none") +
-    scale_shape_manual(values = c("Biomarker" = 16, "Food" = 15), guide = "none") +
-    scale_edge_color_manual(values = cols_edges) +
-    theme_graph(foreground = "white", fg_text_colour = "white") + 
-    theme(legend.title = element_blank(),
-          legend.text = element_text(size = input$legendSize),
-          legend.position = input$legendPos)
+  if(get_graph == "NULL") {
+    get_graph <- NULL
+  }
+    
+  networkplot <- fobitools::fobi_graph(
+    terms = terms_code,
+    get = get_graph,
+    property = input$property,
+    layout = input$layout,
+    labels = input$plotnames,
+    labelsize = input$labelsize,
+    legend = input$legend,
+    legendSize = input$legendSize,
+    legendPos = input$legendPos,
+    curved = input$curved,
+    pointSize = input$pointSize)
   
   return(networkplot)
     
@@ -62,11 +48,10 @@ output$downloadPlot <- downloadHandler(
 
 output$fobiD3graph <- networkD3::renderSimpleNetwork({
   
-  entity <- input$FOBI_name
+  validate(need(!is.null(input$FOBI_name), "Select one or more entities."))
+  validate(need(!is.null(input$property), "Select one or more properties."))
   
-  fobi_links <- graph_table %>% 
-    filter(from %in% entity | to %in% entity) %>% 
-    filter(Property %in% input$property)
+  fobi_links <- TABLE()
   
   validate(need(nrow(fobi_links) > 1, "There aren't connections between selected entities and properties."))
   
@@ -76,37 +61,80 @@ output$fobiD3graph <- networkD3::renderSimpleNetwork({
 
 #### TABLE
 
+TABLE <- reactive({
+  
+  terms_code <- fobitools::fobi %>%
+    filter(name %in% input$FOBI_name) %>%
+    pull(id_code)
+  
+  get_graph <- input$get_graph
+  
+  if(get_graph == "NULL") {
+    get_graph <- NULL
+  }
+  
+  fobi_foods <- fobitools::foods
+  
+  if (!is.null(get_graph)) {
+    if (get_graph == "des") {
+      fobi_des <- fobitools::fobi_terms %>% 
+        ontologyIndex::get_descendants(roots = terms_code, exclude_roots = TRUE)
+      
+      fobiGraph <- fobi %>% 
+        filter(id_code %in% fobi_des) %>% 
+        filter(!is.na(is_a_code))
+    }
+    else {
+      fobi_anc <- fobitools::fobi_terms %>% 
+        ontologyIndex::get_ancestors(terms = terms_code)
+      
+      fobiGraph <- fobi %>% 
+        filter(id_code %in% fobi_anc) %>% 
+        filter(!is.na(is_a_code))
+    }
+  }
+  else {
+    fobiGraph <- fobitools::fobi %>% 
+      filter(id_code %in% terms_code) %>% 
+      filter(!is.na(is_a_code))
+  }
+  
+  contains <- fobiGraph %>% 
+    mutate(Property = ifelse(!is.na(Contains), "Contains", NA)) %>% 
+    filter(!is.na(Property)) %>% 
+    select(name, Contains, Property) %>% 
+    rename(from = 1, to = 2, Property = 3)
+  
+  biomarkerof <- fobiGraph %>% 
+    mutate(Property = ifelse(!is.na(BiomarkerOf), "BiomarkerOf", NA)) %>% 
+    filter(!is.na(Property)) %>% 
+    select(name, BiomarkerOf, Property) %>% 
+    rename(from = 1, to = 2, Property = 3)
+  
+  is_a <- fobiGraph %>%
+    select(name, is_a_name) %>% 
+    mutate(Property = "is_a") %>% 
+    filter(!duplicated(name)) %>% 
+    rename(from = 1, to = 2, Property = 3)
+  
+  sub_table <- rbind(is_a, biomarkerof, contains) %>% 
+    filter(Property %in% input$property)
+  
+  return(sub_table)
+  
+})
+
 output$ontologytable <- DT::renderDataTable({
   
-  entity <- input$FOBI_name
+  validate(need(!is.null(input$FOBI_name), "Select one or more entities."))
+  validate(need(!is.null(input$property), "Select one or more properties."))
   
-  sub_table <- fobi %>% 
-    filter(name %in% entity) %>% # | is_a_name %in% entity | BiomarkerOf %in% entity | Contains %in% entity
-    select(-ChemSpider, -PubChemCID, -KEGG, -HMDB, -InChIKey, -InChICode, -alias) %>%
-    dplyr::relocate(FOBI, .before = name) %>%
-    rename("ID" = id_code,
-           "FOBI ID" = FOBI,
-           "Name" = name,
-           "SuperClass ID" = is_a_code,
-           "SuperClass" = is_a_name,
-           "BiomarkerOf ID" = id_BiomarkerOf,
-           "Contains ID" = id_Contains)
+  sub_table <- fobitools::fobi %>%
+    filter(name %in% TABLE()$from)
   
-  if(!("Contains" %in% input$property)){
-    sub_table <- sub_table %>%
-      select(-`Contains ID`, -Contains)
-  }
-  if(!("BiomarkerOf" %in% input$property)){
-    sub_table <- sub_table %>%
-      select(-`BiomarkerOf ID`, -BiomarkerOf)
-  }
-  if(!("is_a" %in% input$property)){
-    sub_table <- sub_table %>%
-      select(-`SuperClass ID`, -SuperClass)
-  }
+  validate(need(nrow(sub_table) > 1, "No terms with these characteristics."))
   
-  sub_table <- sub_table %>%
-    filter(!duplicated(.))
+  ##
   
   DT::datatable(sub_table, 
                 filter = 'none',extensions = 'Buttons',

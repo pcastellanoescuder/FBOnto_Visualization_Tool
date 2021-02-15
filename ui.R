@@ -28,6 +28,15 @@ tagList(
                                          selected = c("4,5-dicaffeoylquinic acid", "Quinic acids and derivatives", "Cyclitols and derivatives")
                           ), 
                           
+                          selectizeInput("get_graph", 
+                                         label = "Get:",
+                                         multiple = FALSE,
+                                         choices = c('None' = "NULL", 
+                                                     'Descendants' = "des", 
+                                                     'Ancestors' = "anc"),
+                                         selected = "NULL"
+                          ),
+                          
                           selectizeInput("property", 
                                          label = "Property:",
                                          multiple = TRUE,
@@ -50,11 +59,6 @@ tagList(
 
                                            conditionalPanel("input.plotnames",
 
-                                                            radioButtons("labeltext",
-                                                                         "Label type:",
-                                                                         c("Label" = "label",
-                                                                           "Text" = "text")
-                                                            ),
                                                             sliderInput("labelsize",
                                                                         "Label size",
                                                                         min = 1,
@@ -65,7 +69,7 @@ tagList(
                                            ),
 
                                            selectInput("layout", "Layout:",
-                                                       choices = c('sugiyama', 'fr', 'kk', 'lgl', 'graphopt', 'drl', 'linear')
+                                                       choices = c('sugiyama', 'lgl')
                                                        ),
                                            
                                            sliderInput("pointSize", "Node size", min = 1, max = 15, value = 4, step = 1),
@@ -266,12 +270,12 @@ IQPNAANSBPBGFQ-UHFFFAOYSA-N",
   ## FOOTER
   ## ==================================================================================== ##  
   
-  footer = p(hr(), p("ShinyApp created by ", a(HTML("<b>Pol Castellano Escuder</b>"), href = "https://pcastellanoescuder.github.io"), align = "center", width = 4),
+  footer = p(hr(), p(a(HTML("<b>Pol Castellano Escuder</b>"), href = "https://pcastellanoescuder.github.io"), ", Cristina Andrés Lacueva and Alex Sánchez Pla", align = "center", width = 4),
              p(("Statistics and Bioinformatics Lab and Biomarkers and Nutritional & Food Metabolomics Lab from "), align = "center", width = 4),
              p(("University of Barcelona"), align = "center", width = 4),
              p(("Copyright (C) 2021, code licensed under GPLv3"), align = "center", width = 4),
-             p(("Code available on Github:"), a("https://github.com/pcastellanoescuder/fobitoolsGUI", 
-                                                href = "https://github.com/pcastellanoescuder/fobitoolsGUI"), align = "center", width = 4),
+             p(("Code available on Github:"), a("https://github.com/nutrimetabolomics/fobitoolsGUI", 
+                                                href = "https://github.com/nutrimetabolomics/fobitoolsGUI"), align = "center", width = 4),
              p(("Please cite:"), a("https://doi.org/10.1093/databa/baaa033", href = "https://doi.org/10.1093/databa/baaa033"), align = "center", width = 4)
   )#,
   

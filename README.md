@@ -11,7 +11,7 @@
 
 ## Overview
 
-`fobitoolsGUI` is a web-based tool based on the [`fobitools` R package](https://github.com/pcastellanoescuder/fobitools). This user-friendly web interface is focused on the [FOBI](https://github.com/pcastellanoescuder/FoodBiomarkerOntology) ontology visualization and the **food enrichment analysis** for nutrimetabolomic studies. Several functionalities for interacting with FOBI are provided here:
+`fobitoolsGUI` is a web-based tool based on the [`fobitools` R package](https://github.com/pcastellanoescuder/fobitools). This user-friendly web interface is focused on the [FOBI](https://github.com/pcastellanoescuder/FoodBiomarkerOntology) ontology visualization and the **food enrichment analysis** in nutrimetabolomic studies. Several functionalities for interacting with FOBI are provided here:
 
   - FOBI graph static visualization
   - FOBI graph dynamic visualization
@@ -30,7 +30,7 @@
 
 Open a [RStudio](https://rstudio.com) console and run:
 
-```
+``` r
 # CRAN packages
 
 installifnot <- function(pckgName){
@@ -40,7 +40,7 @@ installifnot <- function(pckgName){
   }
 }
 
-pk1 <- c("shiny", "DT", "tidyverse", "ggraph", "tidygraph", "readxl",
+pk1 <- c("shiny", "DT", "tidyverse", "ggraph", "tidygraph", "readxl", "ontologyIndex",
          "ggrepel", "shinythemes", "shinyWidgets", "networkD3", "BiocManager")
          
 for (i in 1:length(pk1)){
@@ -57,7 +57,7 @@ BiocManager::install("fobitools")
 
 Once all dependencies have been installed run the following command and enjoy the fobitoolsGUI!  
 
-```
+``` r
 shiny::runGitHub("pcastellanoescuder/fobitoolsGUI")
 ```    
 
@@ -67,7 +67,7 @@ shiny::runGitHub("pcastellanoescuder/fobitoolsGUI")
 
 Pull the fobitoolsGUI Docker container image hosted at [Docker Hub](https://hub.docker.com/repository/docker/pcastellanoescuder/fobitoolsgui) by running the following command in the terminal.
 
-```
+``` bash
 docker pull pcastellanoescuder/fobitoolsgui
 ```
 
@@ -75,7 +75,7 @@ docker pull pcastellanoescuder/fobitoolsgui
 
 Run the container on your terminal once it has been pulled.   
 
-```
+``` bash
 docker run -d --rm -p 3838:3838 fobitoolsgui
 ```
 
