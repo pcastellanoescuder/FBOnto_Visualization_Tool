@@ -24,6 +24,65 @@
 
 `fobitoolsGUI` is hosted at our own server and it's available at http://webapps.nutrimetabolomics.com/fobitoolsGUI.
 
+## Run fobitoolsGUI locally
+
+### Step 1: Install package dependencies
+
+Open a [RStudio](https://rstudio.com) console and run:
+
+```
+# CRAN packages
+
+installifnot <- function(pckgName){
+  if (!(require(pckgName, character.only = TRUE))) {
+    install.packages(pckgName, dep = TRUE)
+    require(pckgName, character.only = TRUE)
+  }
+}
+
+pk1 <- c("shiny", "DT", "tidyverse", "ggraph", "tidygraph", "readxl",
+         "ggrepel", "shinythemes", "shinyWidgets", "networkD3", "BiocManager")
+         
+for (i in 1:length(pk1)){
+  installifnot(pk1[i])
+}
+
+# Bioconductor packages
+
+BiocManager::install(version = "devel")
+BiocManager::install("fobitools")
+```
+
+### Step 2: Launch fobitoolsGUI locally :tada:
+
+Once all dependencies have been installed run the following command and enjoy the fobitoolsGUI!  
+
+```
+shiny::runGitHub("pcastellanoescuder/fobitoolsGUI")
+```    
+
+## Run fobitoolsGUI Docker container image
+
+### Step 1: Pull Docker image
+
+Pull the fobitoolsGUI Docker container image hosted at [Docker Hub](https://hub.docker.com/repository/docker/pcastellanoescuder/fobitoolsgui) by running the following command in the terminal.
+
+```
+docker pull pcastellanoescuder/fobitoolsgui
+```
+
+### Step 2: Run Docker image
+
+Run the container on your terminal once it has been pulled.   
+
+```
+docker run -d --rm -p 3838:3838 fobitoolsgui
+```
+
+### Step 3: Run fobitoolsGUI in your browser
+
+Open your browser and paste `http://0.0.0.0:3838`. Then, enjoy the fobitoolsGUI!   
+
 ## Citation
 
 **Pol Castellano-Escuder, Raúl González-Domínguez, David S Wishart, Cristina Andrés-Lacueva, Alex Sánchez-Pla**, _FOBI: an ontology to represent food intake data and associate it with metabolomic data_, Database, Volume 2020, 2020, baaa033. DOI: [https://doi.org/10.1093/databa/baaa033](https://doi.org/10.1093/databa/baaa033)   
