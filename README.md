@@ -59,29 +59,7 @@ Once all dependencies have been installed run the following command and enjoy th
 
 ``` r
 shiny::runGitHub("pcastellanoescuder/fobitoolsGUI")
-```    
-
-## Run fobitoolsGUI Docker container image
-
-### Step 1: Pull Docker image
-
-Pull the fobitoolsGUI Docker container image hosted at [Docker Hub](https://hub.docker.com/repository/docker/pcastellanoescuder/fobitoolsgui) by running the following command in the terminal.
-
-``` bash
-docker pull pcastellanoescuder/fobitoolsgui
 ```
-
-### Step 2: Run Docker image
-
-Run the container on your terminal once it has been pulled.   
-
-``` bash
-docker run -d --rm -p 3838:3838 fobitoolsgui
-```
-
-### Step 3: Run fobitoolsGUI in your browser
-
-Open your browser and paste `http://0.0.0.0:3838`. Then, enjoy the fobitoolsGUI!   
 
 ## Citation
 
