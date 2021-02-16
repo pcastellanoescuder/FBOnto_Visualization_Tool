@@ -124,7 +124,7 @@ output$fobiD3graph <- networkD3::renderSimpleNetwork({
 
   fobi_links <- TABLE_GEN()
 
-  validate(need(nrow(fobi_links) > 1, "There aren't connections between selected entities and properties."))
+  validate(need(nrow(fobi_links) > 0, "There aren't connections between selected entities and properties."))
 
   simpleNetwork(fobi_links, fontSize = input$SizeFontD3, zoom = TRUE, charge = input$net_charge, height = "800px")
   
@@ -158,7 +158,7 @@ output$ontologytable <- DT::renderDataTable({
       select(-is_a_code, -is_a_name)
   }
   
-  validate(need(nrow(sub_table) > 1, "No terms with these characteristics."))
+  validate(need(nrow(sub_table) > 0, "No terms with these characteristics."))
   
   ##
   

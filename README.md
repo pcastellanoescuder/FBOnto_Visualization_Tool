@@ -53,7 +53,7 @@ BiocManager::install(version = "devel")
 BiocManager::install("fobitools")
 ```
 
-### Step 2: Launch fobitoolsGUI locally :tada:
+### Step 2: Launch fobitoolsGUI locally
 
 Once all dependencies have been installed run the following command and enjoy the fobitoolsGUI!  
 
