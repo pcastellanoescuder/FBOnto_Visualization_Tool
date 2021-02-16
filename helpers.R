@@ -1,8 +1,7 @@
 
-library(tidyverse)
-library(ggraph)
-library(tidygraph)
-library(ggrepel)
+library(shiny)
+library(dplyr)
+library(DT)
 library(shinythemes)
 library(fobitools)
 library(ontologyIndex)
