@@ -158,6 +158,9 @@ output$ontologytable <- DT::renderDataTable({
       select(-is_a_code, -is_a_name)
   }
   
+  sub_table <- sub_table %>%
+    filter(!duplicated(.))
+  
   validate(need(nrow(sub_table) > 0, "No terms with these characteristics."))
   
   ##
