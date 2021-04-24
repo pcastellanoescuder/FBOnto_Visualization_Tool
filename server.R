@@ -47,7 +47,11 @@ fobi_network <- reactive({
     
   })
 
+## PLOT OUTPUT
+
 output$ontologyplot <- renderPlot({fobi_network()})
+
+## DOWNLOAD PLOT
 
 output$downloadPlot <- downloadHandler(
   filename = function(){paste0(Sys.Date(), "_FOBI_network", ".png")},
@@ -56,7 +60,7 @@ output$downloadPlot <- downloadHandler(
     }
   )
 
-#### TABLE GENERATION
+## TABLE GENERATION
 
 TABLE_GEN <- reactive({
   
@@ -118,6 +122,18 @@ TABLE_GEN <- reactive({
   return(fobi_table)
   
 })
+
+## DOWNLOAD SIF FORMAT
+
+# output$downloadCy <- downloadHandler(
+#   filename = function(){paste0(Sys.Date(), "_FOBI_network_SIF.zip")},
+#   content = function(file){
+#     
+#     fobi_links <- TABLE_GEN()
+#     fobi_igr <- igraph::graph_from_data_frame(fobi_links)
+#     sif_files <- BioNet::saveNetwork(fobi_igr, file = paste0(Sys.Date(), "_FOBI_network"), type = "sif")
+#   }
+# )
 
 ## INTERACTIVE PLOT
 

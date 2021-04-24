@@ -40,8 +40,8 @@ installifnot <- function(pckgName){
   }
 }
 
-pk1 <- c("shiny", "DT", "dplyr", "readxl", "readr", "ontologyIndex",
-         "shinythemes", "shinyWidgets", "networkD3", "BiocManager")
+pk1 <- c("shiny", "DT", "dplyr", "readxl", "readr", "ontologyIndex", "igraph",
+         "ggplot2", "shinythemes", "shinyWidgets", "networkD3", "BiocManager")
 
 for (i in 1:length(pk1)){
   installifnot(pk1[i])
@@ -49,8 +49,7 @@ for (i in 1:length(pk1)){
 
 # Bioconductor packages
 
-BiocManager::install(version = "devel")
-BiocManager::install("fobitools")
+BiocManager::install("fobitools", "BioNet")
 ```
 
 ### Step 2: Launch fobitoolsGUI locally

@@ -46,7 +46,9 @@ tagList(
                           checkboxInput("plotnames", "Network labels", value = TRUE
                           ),
                           
-                          downloadButton("downloadPlot","Download Plot"),
+                          downloadButton("downloadPlot", "Download plot"),
+                          
+                          downloadButton("downloadCy", "Download SIF graph"),
                           
                           br(),
                           br(),
