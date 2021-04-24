@@ -269,8 +269,10 @@ IQPNAANSBPBGFQ-UHFFFAOYSA-N",
   ## FOOTER
   ## ==================================================================================== ##  
   
-  footer = p(hr(), p(a(HTML("<b>Pol Castellano Escuder</b>"), href = "https://pcastellanoescuder.github.io"), ", Cristina Andrés Lacueva and Alex Sánchez Pla", align = "center", width = 4),
-             p(("Statistics and Bioinformatics Lab and Biomarkers and Nutritional & Food Metabolomics Lab from "), align = "center", width = 4),
+  footer = p(hr(), p(a(HTML("<b>Pol Castellano Escuder</b>"), href = "https://pcastellanoescuder.github.io"), ",",
+                     a("Cristina Andrés Lacueva", href = "http://www.nutrimetabolomics.com/team/cristina"), "and", 
+                     a("Alex Sánchez Pla", href = "https://webgrec.ub.edu/webpages/000011/cat/asanchez.ub.edu.html"), align = "center", width = 4),
+             p(("Statistics and Bioinformatics Lab and Biomarkers and Nutritional & Food Metabolomics Lab"), align = "center", width = 4),
              p(("University of Barcelona"), align = "center", width = 4),
              p(("Copyright (C) 2021, code licensed under GPLv3"), align = "center", width = 4),
              p(("Code available on Github:"), a("https://github.com/nutrimetabolomics/fobitoolsGUI", 

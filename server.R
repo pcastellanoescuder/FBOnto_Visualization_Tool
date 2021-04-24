@@ -203,7 +203,7 @@ output$IDtable <- DT::renderDataTable({
   
   validate(need(input$convId_metabolites != "", "Select one or more entities."))
   
-  res <- read_delim(input$convId_metabolites, delim = "\n", col_names = FALSE) %>%
+  res <- readr::read_delim(input$convId_metabolites, delim = "\n", col_names = FALSE) %>%
     pull(1) %>%
     fobitools::id_convert(to = input$convTo)
     
@@ -248,12 +248,12 @@ food_enrichment <- reactive({
   validate(need(input$metaboliteList != "", "Select one or more entities for metaboliteList."))
   validate(need(input$metaboliteUniverse != "", "Select one or more entities for metaboliteUniverse."))
   
-  metaboliteList <- read_delim(input$metaboliteList, delim = "\n", col_names = FALSE) %>% 
+  metaboliteList <- readr::read_delim(input$metaboliteList, delim = "\n", col_names = FALSE) %>% 
     pull(1) %>%
     fobitools::id_convert(to = "FOBI") %>%
     pull(FOBI) 
   
-  metaboliteUniverse <- read_delim(input$metaboliteUniverse, delim = "\n", col_names = FALSE) %>% 
+  metaboliteUniverse <- readr::read_delim(input$metaboliteUniverse, delim = "\n", col_names = FALSE) %>% 
     pull(1) %>%
     fobitools::id_convert(to = "FOBI") %>%
     pull(FOBI)

@@ -40,7 +40,7 @@ installifnot <- function(pckgName){
   }
 }
 
-pk1 <- c("shiny", "DT", "dplyr", "readxl", "ontologyIndex",
+pk1 <- c("shiny", "DT", "dplyr", "readxl", "readr", "ontologyIndex",
          "shinythemes", "shinyWidgets", "networkD3", "BiocManager")
 
 for (i in 1:length(pk1)){
