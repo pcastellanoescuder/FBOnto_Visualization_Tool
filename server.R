@@ -6,7 +6,11 @@ observe({
   names <- fobitools::fobi %>%
     pull(name)
   
-  updateSelectizeInput(session, "FOBI_name", choices = names, selected = c("4,5-dicaffeoylquinic acid", "Quinic acids and derivatives", "Cyclitols and derivatives"))
+  updateSelectizeInput(session, "FOBI_name", 
+                       choices = names, 
+                       selected = c("4,5-dicaffeoylquinic acid",
+                                    "Quinic acids and derivatives",
+                                    "Cyclitols and derivatives"))
 })
   
 #### PLOT
@@ -138,7 +142,18 @@ output$ontologytable <- DT::renderDataTable({
   validate(need(!is.null(input$property), "Select one or more properties."))
   
   sub_table <- fobitools::fobi %>%
-    filter(name %in% TABLE_GEN()$from) %>%
+    filter(name %in% TABLE_GEN()$from)
+  
+  if(input$inverse_food_rel) {
+    
+    inverse_rel <- fobitools::fobi %>%
+      filter(id_BiomarkerOf %in% sub_table$id_code)
+    
+    sub_table <- bind_rows(sub_table, inverse_rel)
+  
+  }
+    
+  sub_table <- sub_table %>%
     select(-ChemSpider, -KEGG, -PubChemCID, -InChIKey, -InChICode, -alias, -HMDB) %>%
     dplyr::relocate(FOBI, .before = name) %>%
     rename("FOBI ID" = FOBI)

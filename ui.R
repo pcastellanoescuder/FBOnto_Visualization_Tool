@@ -43,8 +43,7 @@ tagList(
                                          selected = c("is_a", "BiomarkerOf")
                           ),
                           
-                          checkboxInput("plotnames", "Network Labels", 
-                                        value = TRUE
+                          checkboxInput("plotnames", "Network labels", value = TRUE
                           ),
                           
                           downloadButton("downloadPlot","Download Plot"),
@@ -117,7 +116,12 @@ tagList(
     ## TABLE TAB
     ## ==================================================================================== ## 
     
-    tabPanel("Table", DT::dataTableOutput("ontologytable")
+    tabPanel("Table", 
+             
+             checkboxInput("inverse_food_rel", HTML("Include '<i>HasBiomarker</i>' property"), value = FALSE
+             ),
+             
+             DT::dataTableOutput("ontologytable")
              ),
     
     ## ==================================================================================== ##
