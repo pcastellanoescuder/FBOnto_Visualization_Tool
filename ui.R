@@ -48,10 +48,11 @@ tagList(
                           
                           downloadButton("downloadPlot", "Download plot"),
                           
-                          downloadButton("downloadCy", "Download SIF graph"),
+                          downloadButton("downloadXGMML", HTML("Download XGMML<sup>*</sup>")),
                           
                           br(),
-                          br(),
+                          
+                          helpText(HTML("<sup>*</sup>Extensible Graph Markup and Modelling Language (XGMML) is a network file format supported by Cytoscape")),
                           
                           prettySwitch("showadvanced", "Advanced settings", fill = TRUE, status = "primary"),
 

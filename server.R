@@ -10,7 +10,8 @@ observe({
                        choices = names, 
                        selected = c("4,5-dicaffeoylquinic acid",
                                     "Quinic acids and derivatives",
-                                    "Cyclitols and derivatives"))
+                                    "Cyclitols and derivatives"),
+                       server = TRUE)
 })
   
 #### PLOT
@@ -123,17 +124,19 @@ TABLE_GEN <- reactive({
   
 })
 
-## DOWNLOAD SIF FORMAT
+## DOWNLOAD XGMML FORMAT
 
-# output$downloadCy <- downloadHandler(
-#   filename = function(){paste0(Sys.Date(), "_FOBI_network_SIF.zip")},
-#   content = function(file){
-#     
-#     fobi_links <- TABLE_GEN()
-#     fobi_igr <- igraph::graph_from_data_frame(fobi_links)
-#     sif_files <- BioNet::saveNetwork(fobi_igr, file = paste0(Sys.Date(), "_FOBI_network"), type = "sif")
-#   }
-# )
+output$downloadXGMML <- downloadHandler(
+  filename = function(){paste0(Sys.Date(), "_FOBI_network.xgmml")},
+  content = function(file){
+
+    fobi_links <- TABLE_GEN()
+    fobi_igr <- igraph::graph_from_data_frame(fobi_links)
+    BioNet::saveNetwork(fobi_igr, name = "FOBI_XGMML_network", file = file, type = "XGMML")
+    # showNotification(ui = "Network saved as XGMML file in the app directory", duration = 5, closeButton = TRUE, type = "message")
+    
+  }
+)
 
 ## INTERACTIVE PLOT
 
@@ -193,8 +196,6 @@ output$ontologytable <- DT::renderDataTable({
     filter(!duplicated(.))
   
   validate(need(nrow(sub_table) > 0, "No terms with these characteristics."))
-  
-  ##
   
   DT::datatable(sub_table,
                 filter = 'none',extensions = 'Buttons',
