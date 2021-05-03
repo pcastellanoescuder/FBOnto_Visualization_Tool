@@ -1,4 +1,4 @@
-# Welcome to fobitoolsGUI!
+# Welcome to fobitoolsGUI! <img src='pix/logo.png' align="right" height="139" />
 
 <!-- badges: start --> 
 
@@ -11,18 +11,18 @@
 
 ## Overview
 
-`fobitoolsGUI` is a web-based tool based on the [`fobitools` R package](https://github.com/pcastellanoescuder/fobitools). This user-friendly web interface is focused on the [FOBI](https://github.com/pcastellanoescuder/FoodBiomarkerOntology) ontology visualization and the **food enrichment analysis** in nutrimetabolomic studies. Several functionalities for interacting with FOBI are provided here:
+`fobitoolsGUI` is a web-based tool based on the [`fobitools` R package](https://github.com/pcastellanoescuder/fobitools). This user-friendly web interface provides a set of tools for interacting with [FOBI (Food-Biomarker Ontology)](https://github.com/pcastellanoescuder/FoodBiomarkerOntology). A collection of basic manipulation tools for biological significance analysis, graph visualization and text mining strategies for annotating nutritional data are provided here:
 
   - FOBI graph static visualization
   - FOBI graph dynamic visualization
   - Extract FOBI information in a downloadable table
   - Compound ID conversion (among metabolite names, FOBI, ChemSpider, KEGG, PubChemCID, InChIKey, InChICode and HMDB IDs)
-  - Biological significance analysis via a classical over representation analysis:
-      - Chemical class enrichment analysis: Over representation analysis using FOBI chemical classes as sets (tables and plots provided)
-      - **Food enrichment analysis**: Over representation analysis using FOBI food groups as sets (tables and plots provided)
-  - Text mining function for annotating dietary data
+  - Biological significance analysis using ORA and MSEA methods:
+    - Chemical class enrichment analysis: ORA and MSEA using FOBI chemical classes as metabolite sets
+    - **Food enrichment analysis**: ORA and MSEA using FOBI food groups as metabolite sets
+  - Text mining algorithm for annotating free-text dietary data
 
-`fobitoolsGUI` is hosted at our own server and it's available at http://webapps.nutrimetabolomics.com/fobitoolsGUI.
+`fobitoolsGUI` is hosted at our own server, freely available at http://webapps.nutrimetabolomics.com/fobitoolsGUI.
 
 ## Run fobitoolsGUI locally
 
@@ -41,7 +41,7 @@ installifnot <- function(pckgName){
 }
 
 pk1 <- c("shiny", "DT", "dplyr", "readxl", "readr", "ontologyIndex", "igraph",
-         "XML", "ggplot2", "shinythemes", "shinyWidgets", "networkD3", "BiocManager")
+         "ggplot2", "shinythemes", "shinyWidgets", "networkD3", "BiocManager")
 
 for (i in 1:length(pk1)){
   installifnot(pk1[i])
