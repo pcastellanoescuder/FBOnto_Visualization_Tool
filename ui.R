@@ -228,10 +228,20 @@ IQPNAANSBPBGFQ-UHFFFAOYSA-N",
                tabsetPanel(
                  
                  tabPanel("Table",
-                          DT::dataTableOutput("oratable")
+                          conditionalPanel(condition = "input.enrich_method == 'ora'",
+                                           DT::dataTableOutput("oratable")
+                          ),
+                          conditionalPanel(condition = "input.enrich_method == 'msea'",
+                                           DT::dataTableOutput("mseatable")
+                          )
                           ),
                  tabPanel("Plot",
-                          plotlyOutput("oraplot")
+                          conditionalPanel(condition = "input.enrich_method == 'ora'",
+                                           plotlyOutput("oraplot")
+                          ),
+                          conditionalPanel(condition = "input.enrich_method == 'msea'",
+                                           plotlyOutput("mseaplot")
+                          )
                           )
                  )
                )
