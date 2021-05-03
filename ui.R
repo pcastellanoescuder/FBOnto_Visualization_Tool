@@ -173,7 +173,7 @@ IQPNAANSBPBGFQ-UHFFFAOYSA-N",
     ## ENRICHMENT ANALYSIS TAB
     ## ==================================================================================== ## 
     
-    tabPanel("Food Enrichment Analysis", 
+    tabPanel("Enrichment Analysis", 
              
              sidebarPanel(width = 3,
                           
@@ -199,13 +199,7 @@ IQPNAANSBPBGFQ-UHFFFAOYSA-N",
                                                   "Biomarker" = 'biomarker'),
                                       selected = 'food'),
                           
-                          numericInput("pvalcutoff", "p-value cutoff", min = 0, max = 1, value = 0.01),
-                          
-                          selectInput("adj_pval",
-                                      "p-value adjustment method",
-                                      choices = c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr"),
-                                      selected = "fdr"
-                                      )
+                          numericInput("pvalcutoff", "p-value cutoff", min = 0, max = 1, value = 0.01)
                           
              ),
              
@@ -216,7 +210,7 @@ IQPNAANSBPBGFQ-UHFFFAOYSA-N",
                           DT::dataTableOutput("oratable")
                           ),
                  tabPanel("Plot",
-                          plotOutput("oraplot")
+                          plotlyOutput("oraplot")
                           )
                  )
                )

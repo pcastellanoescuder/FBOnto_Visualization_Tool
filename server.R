@@ -293,9 +293,8 @@ food_enrichment <- reactive({
   res <- fobitools::ora(metaboliteList,
                         metaboliteUniverse,
                         subOntology = input$subOntology,
-                        pvalCutoff = input$pvalcutoff,
-                        adjust = input$adj_pval) %>%
-    arrange(-desc(pvalueAdj))
+                        pvalCutoff = input$pvalcutoff) %>%
+    arrange(-desc(padj))
   
   return(res)
   
@@ -329,11 +328,11 @@ output$oratable <- DT::renderDataTable({
 
 ##
 
-output$oraplot <- renderPlot({
+output$oraplot <- renderPlotly({
   
   res <- food_enrichment()
   
-  ggplot(res, aes(x = -log10(pvalue), y = reorder(className, -log10(pvalue)), fill = -log10(pvalue), label = classId)) +
+  ora_plot <- ggplot(res, aes(x = -log10(pval), y = reorder(className, -log10(pval)), fill = -log10(pval))) +
     xlab("-log10(P-value)") +
     ylab("") +
     geom_col() +
@@ -342,6 +341,13 @@ output$oraplot <- renderPlot({
           axis.text = element_text(size = 13),
           axis.title = element_text(size = 15))
   
+  plotly::ggplotly(ora_plot) %>% 
+    plotly::config(
+      toImageButtonOptions = list(format = "png"),
+      displaylogo = FALSE,
+      modeBarButtonsToRemove = c("sendDataToCloud", "zoom2d", "select2d", "lasso2d", 
+                                 "autoScale2d", "hoverClosestCartesian", "hoverCompareCartesian")
+      )
 })
 
 #### FOOD ANNOTATION
