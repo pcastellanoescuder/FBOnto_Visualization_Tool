@@ -177,21 +177,42 @@ IQPNAANSBPBGFQ-UHFFFAOYSA-N",
              
              sidebarPanel(width = 3,
                           
-                          textAreaInput("metaboliteList", 
-                                        label = "Enter your metabolite list here:",
-                                        height = "220px",
-                                        resize = "none"
+                          radioButtons("enrich_method", 
+                                       label = "Enrichment analysis method:",
+                                       choices = c("ORA" = 'ora',
+                                                   "MSEA" = 'msea'),
+                                       selected = "ora",
+                                       inline = TRUE
                           ),
                           
-                          textAreaInput("metaboliteUniverse", 
-                                        label = "Enter your metabolite universe here:",
-                                        height = "220px",
-                                        resize = "none"
+                          conditionalPanel(condition = "input.enrich_method == 'ora'",
+                                           
+                                           textAreaInput("metaboliteList", 
+                                                         label = "Enter your metabolite list here:",
+                                                         height = "220px",
+                                                         resize = "none"
+                                           ),
+                                           
+                                           textAreaInput("metaboliteUniverse", 
+                                                         label = "Enter your metabolite universe here:",
+                                                         height = "220px",
+                                                         resize = "none"
+                                           ),
+                                           
+                                           checkboxInput("exampleORA", "Use example data", value = FALSE)
                           ),
                           
-                          helpText("Note: can use metabolite names, FOBI, ChemSpider, KEGG, PubChemCID, InChIKey, InChICode and HMDB IDs"),
-                          
-                          checkboxInput("exampleORA", "Use example data", value = FALSE),
+                          conditionalPanel(condition = "input.enrich_method == 'msea'",
+                                           
+                                           fileInput("msea_data", "Select an xlsx file:",
+                                                     accept = c(".xlsx")
+                                           ),
+                                           
+                                           helpText("Note: Input must be a two column ranked data frame. First column must contain",
+                                                    "FOBI IDs and the second column must contain metabolite-level stats used to rank the list"),
+                                           
+                                           checkboxInput("exampleMSEA", "Use example data", value = FALSE)
+                          ),
                           
                           selectInput("subOntology",
                                       "Select a FOBI sub-ontology",

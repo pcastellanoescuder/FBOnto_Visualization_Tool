@@ -57,7 +57,7 @@ BiocManager::install(c("fobitools", "BioNet"))
 Once all dependencies have been installed run the following command and enjoy the fobitoolsGUI!  
 
 ``` r
-shiny::runGitHub("pcastellanoescuder/fobitoolsGUI")
+shiny::runGitHub("nutrimetabolomics/fobitoolsGUI")
 ```
 
 ## Citation

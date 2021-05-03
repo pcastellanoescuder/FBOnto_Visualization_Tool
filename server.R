@@ -275,7 +275,7 @@ observe({
 
 ##
 
-food_enrichment <- reactive({
+ora_enrichment <- reactive({
   
   validate(need(input$metaboliteList != "", "Select one or more entities for metaboliteList."))
   validate(need(input$metaboliteUniverse != "", "Select one or more entities for metaboliteUniverse."))
@@ -304,7 +304,7 @@ food_enrichment <- reactive({
 
 output$oratable <- DT::renderDataTable({
   
-  res <- food_enrichment()
+  res <- ora_enrichment()
   
   DT::datatable(res,
                 filter = 'none',extensions = 'Buttons',
@@ -330,7 +330,7 @@ output$oratable <- DT::renderDataTable({
 
 output$oraplot <- renderPlotly({
   
-  res <- food_enrichment()
+  res <- ora_enrichment()
   
   ora_plot <- ggplot(res, aes(x = -log10(pval), y = reorder(className, -log10(pval)), fill = -log10(pval))) +
     xlab("-log10(P-value)") +
