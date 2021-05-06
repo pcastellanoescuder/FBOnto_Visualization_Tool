@@ -462,17 +462,44 @@ output$mseaplot <- renderPlotly({
 
 #### FOOD ANNOTATION
 
+annoInput <- reactive({
+  
+  if(input$exampleANNO) {
+    
+    raw_foods <- readxl::read_xlsx("data/sample_ffq.xlsx")
+    
+    return(raw_foods)
+  }
+  
+  else {
+    
+    infile <- input$raw_foods
+    
+    if (is.null(infile)){
+      return(NULL)
+    }
+    
+    else {
+      
+      file.rename(infile$datapath, paste(infile$datapath, ".xlsx", sep = ""))
+      raw_foods <- readxl::read_xlsx(paste(infile$datapath, ".xlsx", sep = ""), 1)
+      
+      validate(need(ncol(raw_foods) == 2, "Input must be a two column data frame."))
+      
+      return(raw_foods)
+    }
+  }
+})
+
+##
+
 output$raw_foods_file <- DT::renderDataTable({
   
-  inFile <- input$raw_foods
+  raw_foods <- annoInput()
   
-  if(is.null(inFile))
-    return(NULL)
-  
-  file.rename(inFile$datapath, paste(inFile$datapath, ".xlsx", sep = ""))
-  raw_fods <- read_excel(paste(inFile$datapath, ".xlsx", sep = ""), 1)
+  validate(need(!is.null(raw_foods), "Upload data."))
 
-  DT::datatable(raw_fods,
+  DT::datatable(raw_foods,
                 filter = 'none',extensions = 'Buttons',
                 escape = FALSE,  rownames = FALSE, class = 'cell-border stripe',
                 options = list(pageLength = 10))
@@ -483,17 +510,26 @@ output$raw_foods_file <- DT::renderDataTable({
 
 food_annotation <- reactive({
   
-  inFile <- input$raw_foods
+  annotated_foods <- annoInput()
   
-  if(is.null(inFile))
-    return(NULL)
+  validate(need(!is.null(annotated_foods), "Upload data."))
   
-  file.rename(inFile$datapath, paste(inFile$datapath, ".xlsx", sep = ""))
-  annotated_foods <- read_excel(paste(inFile$datapath, ".xlsx", sep = ""), 1) %>%
+  annotated_foods <- annotated_foods %>%
     fobitools::annotate_foods(similarity = input$similarity)
   
   unannotated_foods <- annotated_foods$unannotated
   annotated_foods <- annotated_foods$annotated
+  
+  if(input$add_metabolites) {
+    
+    inverse_rel <- fobitools::fobi %>%
+      filter(id_BiomarkerOf %in% annotated_foods$FOBI_ID) %>%
+      select(id_code, name, id_BiomarkerOf, FOBI) %>%
+      dplyr::rename(METABOLITE_ID = 1, METABOLITE_NAME = 2, FOBI_ID = 3, METABOLITE_FOBI_ID = 4)
+    
+    annotated_foods <- left_join(annotated_foods, inverse_rel, by = "FOBI_ID")
+    
+  }
   
   return(list(annotated_foods = annotated_foods, unannotated_foods = unannotated_foods))
   
@@ -503,9 +539,9 @@ food_annotation <- reactive({
 
 output$annotated_foods_file <- DT::renderDataTable({
   
-  annotated_fods <- food_annotation()$annotated_foods
+  annotated_foods <- food_annotation()$annotated_foods
   
-  DT::datatable(annotated_fods,
+  DT::datatable(annotated_foods,
                 filter = 'none',extensions = 'Buttons',
                 escape = FALSE,  rownames = FALSE, class = 'cell-border stripe',
                 options = list(
@@ -521,7 +557,7 @@ output$annotated_foods_file <- DT::renderDataTable({
                                         filename = paste0(Sys.Date(), "_FOBI_annotated_foods"))),
                       text = "Dowload")),
                   order=list(list(2, "desc")),
-                  pageLength = nrow(annotated_fods)))
+                  pageLength = nrow(annotated_foods)))
   })
 
 ##
@@ -547,6 +583,19 @@ output$unannotated_foods_file <- DT::renderDataTable({
                       text = "Dowload")),
                   order=list(list(2, "desc")),
                   pageLength = nrow(unannotated_foods)))
+})
+
+##
+
+output$anno_plot <- renderPlot({
+  
+  annotated_foods <- food_annotation()$annotated_foods
+  
+  fobitools::fobi_graph(terms = annotated_foods$FOBI_ID,
+                        layout = "lgl",
+                        labels = TRUE,
+                        legend = TRUE)
+  
 })
 
 }

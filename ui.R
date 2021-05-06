@@ -260,11 +260,16 @@ IQPNAANSBPBGFQ-UHFFFAOYSA-N",
                           ),
                           
                           helpText("Note: Input must be a two column data frame. First column must contain IDs",
-                                   "and the second column must contain food items (it can be a word or a string)"),
+                                   "and the second column must contain food items (both words and strings)"),
                           
-                          # checkboxInput("exampleANNO", "Use example data", value = FALSE),
+                          checkboxInput("exampleANNO", "Use example data", value = FALSE
+                          ),
                           
-                          sliderInput("similarity", "Similarity", min = 0, max = 1, value = 0.85),
+                          checkboxInput("add_metabolites", "Include associated metabolites", value = FALSE
+                          ),
+                          
+                          sliderInput("similarity", "Similarity", min = 0, max = 1, value = 0.85
+                          ),
                           
                           helpText("This value indicates the semantic similarity cutoff used at the last layer", 
                                    "of the text mining pipeline. 1 = exact match; 0 = very poor match.",
@@ -283,6 +288,9 @@ IQPNAANSBPBGFQ-UHFFFAOYSA-N",
                  ),
                  tabPanel("Unannotated data",
                           DT::dataTableOutput("unannotated_foods_file")
+                 ),
+                 tabPanel("Graph view",
+                          plotOutput("anno_plot")
                  )
                )
              )
