@@ -294,7 +294,7 @@ ora_enrichment <- reactive({
                         metaboliteUniverse,
                         subOntology = input$subOntology,
                         pvalCutoff = input$pvalcutoff) %>%
-    arrange(-desc(padj))
+    dplyr::arrange(-dplyr::desc(padj))
   
   return(res)
   
@@ -315,11 +315,11 @@ output$oratable <- DT::renderDataTable({
                     list("copy", "print", list(
                       extend="collection",
                       buttons=list(list(extend = "csv",
-                                        filename = paste0(Sys.Date(), "_FOBI_Enrichment_Analysis")),
+                                        filename = paste0(Sys.Date(), "_FOBI_Enrichment_Analysis_ORA")),
                                    list(extend = "excel",
-                                        filename = paste0(Sys.Date(), "_FOBI_Enrichment_Analysis")),
+                                        filename = paste0(Sys.Date(), "_FOBI_Enrichment_Analysis_ORA")),
                                    list(extend = "pdf",
-                                        filename = paste0(Sys.Date(), "_FOBI_Enrichment_Analysis"))),
+                                        filename = paste0(Sys.Date(), "_FOBI_Enrichment_Analysis_ORA"))),
                       text = "Dowload")),
                   order=list(list(2, "desc")),
                   pageLength = nrow(res)))
@@ -348,6 +348,116 @@ output$oraplot <- renderPlotly({
       modeBarButtonsToRemove = c("sendDataToCloud", "zoom2d", "select2d", "lasso2d", 
                                  "autoScale2d", "hoverClosestCartesian", "hoverCompareCartesian")
       )
+})
+
+#### MSEA
+
+mseaInput <- reactive({
+  
+  if(input$exampleMSEA) {
+    
+    data_msea <- readxl::read_xlsx("data/ranked_list_ST000291.xlsx") %>%
+      dplyr::rename(FOBI = 1, stats = 2)
+    
+    data_msea_vec <- data_msea$stats
+    names(data_msea_vec) <- data_msea$FOBI
+    
+    return(data_msea_vec)
+  }
+  
+  else {
+    
+    infile <- input$msea_data
+    
+    if (is.null(infile)){
+      return(NULL)
+    }
+    
+    else {
+      
+      data_msea <- readxl::read_xlsx(infile$datapath)
+      
+      validate(need(ncol(data_msea) == 2, "Input must be a two column ranked data frame."))
+      
+      data_msea <- data_msea %>%
+        dplyr::rename(FOBI = 1, stats = 2)
+      
+      validate(need(all(data_msea$FOBI %in% fobitools::fobi$FOBI), "Identifiers not found in FOBI."))
+      
+      data_msea_vec <- data_msea$stats
+      names(data_msea_vec) <- data_msea$FOBI
+      
+      return(data_msea_vec)
+    }
+  }
+  })
+
+##
+
+msea_enrichment <- reactive({
+  
+  data_msea_vec <- mseaInput()
+  
+  validate(need(!is.null(data_msea_vec), "Upload a ranked list."))
+  
+  res <- fobitools::msea(data_msea_vec,
+                         subOntology = input$subOntology,
+                         pvalCutoff = input$pvalcutoff) %>%
+    dplyr::arrange(-dplyr::desc(padj))
+  
+  return(res)
+  
+})
+
+##
+
+output$mseatable <- DT::renderDataTable({
+  
+  res <- msea_enrichment()
+  
+  DT::datatable(res,
+                filter = 'none',extensions = 'Buttons',
+                escape = FALSE,  rownames = FALSE, class = 'cell-border stripe',
+                options = list(
+                  dom = 'Bfrtip',
+                  buttons =
+                    list("copy", "print", list(
+                      extend="collection",
+                      buttons=list(list(extend = "csv",
+                                        filename = paste0(Sys.Date(), "_FOBI_Enrichment_Analysis_MSEA")),
+                                   list(extend = "excel",
+                                        filename = paste0(Sys.Date(), "_FOBI_Enrichment_Analysis_MSEA")),
+                                   list(extend = "pdf",
+                                        filename = paste0(Sys.Date(), "_FOBI_Enrichment_Analysis_MSEA"))),
+                      text = "Dowload")),
+                  order=list(list(2, "desc")),
+                  pageLength = nrow(res)))
+  
+})
+
+##
+
+output$mseaplot <- renderPlotly({
+  
+  res <- msea_enrichment() %>%
+    mutate(overlap = length(leadingEdge))
+  
+  msea_plot <- ggplot(res, aes(x = -log10(pval), y = NES, color = NES, size = classSize, label = className)) +
+    xlab("-log10(P-value)") +
+    ylab("NES (Normalized Enrichment Score)") +
+    geom_point() +
+    theme_bw() +
+    theme(legend.position = "none",
+          axis.text = element_text(size = 13),
+          axis.title = element_text(size = 15))
+  
+  plotly::ggplotly(msea_plot) %>% 
+    plotly::config(
+      toImageButtonOptions = list(format = "png"),
+      displaylogo = FALSE,
+      modeBarButtonsToRemove = c("sendDataToCloud", "zoom2d", "select2d", "lasso2d", 
+                                 "autoScale2d", "hoverClosestCartesian", "hoverCompareCartesian")
+    )
 })
 
 #### FOOD ANNOTATION
