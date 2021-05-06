@@ -587,16 +587,52 @@ output$unannotated_foods_file <- DT::renderDataTable({
 
 ##
 
-output$anno_plot <- renderPlot({
+FOOD_PLOT <- reactive({
   
   annotated_foods <- food_annotation()$annotated_foods
   
-  fobitools::fobi_graph(terms = annotated_foods$FOBI_ID,
-                        layout = "lgl",
-                        labels = TRUE,
-                        legend = TRUE)
+  get_graph2 <- input$get_graph2
   
-})
+  if(get_graph2 == "NULL") {
+    get_graph2 <- NULL
+  }
+  
+  if(!input$add_metabolites) {
+    terms_foods <- annotated_foods$FOBI_ID
+  }
+  else {
+    terms_foods <- c(annotated_foods$FOBI_ID, annotated_foods$METABOLITE_ID)
+  }
+  
+  foodplot <- fobitools::fobi_graph(
+    terms = terms_foods,
+    get = get_graph2,
+    property = input$property2,
+    layout = input$layout2,
+    labels = input$plotnames2,
+    labelsize = input$labelsize2,
+    legend = input$legend2,
+    legendSize = input$legendSize2,
+    legendPos = input$legendPos2,
+    curved = input$curved2,
+    pointSize = input$pointSize2)
+  
+  return(foodplot)
+  
+  })
+
+##
+
+output$anno_plot <- renderPlot({FOOD_PLOT()})
+
+## DOWNLOAD FOOD PLOT
+
+output$downloadPlot2 <- downloadHandler(
+  filename = function(){paste0(Sys.Date(), "_FOBI_FOOD_network", ".png")},
+  content = function(file){
+    ggsave(file, plot = FOOD_PLOT(), device = "png", dpi = 200, width = 15, height = 10)
+  }
+)
 
 }
 

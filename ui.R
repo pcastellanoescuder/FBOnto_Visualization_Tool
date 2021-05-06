@@ -220,7 +220,7 @@ IQPNAANSBPBGFQ-UHFFFAOYSA-N",
                                                   "Biomarker" = 'biomarker'),
                                       selected = 'food'),
                           
-                          numericInput("pvalcutoff", "p-value cutoff", min = 0, max = 1, value = 0.01)
+                          numericInput("pvalcutoff", "p-value cutoff", min = 0, max = 1, value = 0.05)
                           
              ),
              
@@ -273,7 +273,9 @@ IQPNAANSBPBGFQ-UHFFFAOYSA-N",
                           
                           helpText("This value indicates the semantic similarity cutoff used at the last layer", 
                                    "of the text mining pipeline. 1 = exact match; 0 = very poor match.",
-                                   "Values below 0.85 are not recommended")
+                                   "Values below 0.85 are not recommended"),
+                          
+                          downloadButton("downloadPlot2", "Download plot")
                           
                           ),
              
@@ -290,7 +292,63 @@ IQPNAANSBPBGFQ-UHFFFAOYSA-N",
                           DT::dataTableOutput("unannotated_foods_file")
                  ),
                  tabPanel("Graph view",
-                          plotOutput("anno_plot")
+                          
+                          br(),
+                          
+                          dropdownButton(
+                            circle = TRUE, status = "warning", icon = icon("gear"), margin = "25px", 
+                            
+                            selectizeInput("get_graph2", 
+                                           label = "Get:",
+                                           multiple = FALSE,
+                                           choices = c('None' = "NULL", 
+                                                       'Descendants' = "des", 
+                                                       'Ancestors' = "anc"),
+                                           selected = "NULL"
+                            ),
+                            
+                            selectizeInput("property2", 
+                                           label = "Property:",
+                                           multiple = TRUE,
+                                           choices = c("is_a", "BiomarkerOf", "Contains"),
+                                           selected = c("is_a", "BiomarkerOf")
+                            ),
+                            
+                            checkboxInput("plotnames2", "Network labels", value = TRUE
+                            ),
+                            
+                            conditionalPanel("input.plotnames2",
+                                             
+                                             sliderInput("labelsize2",
+                                                         "Label size",
+                                                         min = 1,
+                                                         max = 10,
+                                                         value = 5,
+                                                         step = 1
+                                             )
+                            ),
+                            
+                            selectInput("layout2", "Layout:",
+                                        choices = c('sugiyama', 'lgl')
+                            ),
+                            
+                            sliderInput("pointSize2", "Node size", min = 1, max = 15, value = 4, step = 1),
+                            
+                            prettySwitch("curved2", "Curved edges", fill = TRUE, status = "primary"),
+                            
+                            prettySwitch("legend2", "Show legend", fill = TRUE, status = "primary"),
+                            
+                            conditionalPanel("input.legend2",
+                                             
+                                             selectInput("legendPos2", "Legend position",
+                                                         choices = c('bottom', 'top', 'right', 'left')
+                                             ),
+                                             
+                                             sliderInput("legendSize2", "Legend size", min = 12, max = 20, value = 16, step = 1)
+                            )
+                          ),
+                          
+                          plotOutput("anno_plot", height = "500px")
                  )
                )
              )
