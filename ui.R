@@ -137,16 +137,6 @@ tagList(
                           
                           textAreaInput("convId_metabolites", 
                                         label = "Enter your metabolites here:",
-                                        value = "TYNQWWGVEGFKRU-AJDPQWBVSA-N
-DMASLKHVQRHNES-FKKUPVFPSA-N
-PHIQHXFUZVPYII-LURJTMIESA-N
-QVWAEZJXDYOKEH-UHFFFAOYSA-N
-PFTAWBLQPZVEMU-DZGCQCFKSA-N
-FEWJPZIEWOKRBE-JCYAYHJZSA-N
-UYPYRKYUKCHHIB-UHFFFAOYSA-N
-CQOVPNPJLQNMDC-ZETCQYMHSA-N
-PQBAWAQIRZIWIV-UHFFFAOYSA-N
-IQPNAANSBPBGFQ-UHFFFAOYSA-N",
                                         height = "220px",
                                         resize = "none"
                           ),
@@ -161,8 +151,20 @@ IQPNAANSBPBGFQ-UHFFFAOYSA-N",
                                       "Convert IDs to:",
                                       choices = c("metaboliteNames", "FOBI", "ChemSpider", "KEGG", "PubChemCID", "InChIKey", "InChICode", "HMDB"),
                                       selected = "FOBI"
-                          )
+                          ),
                           
+                          helpText("If the fobitoolsGUI conversion tool does not meet the user's requirements or is unable to identify some ",
+                                   "compounds, the following two conversion tools can be used:"),
+                          
+                          helpText(a(HTML("<b>MetaboAnalyst</b>"), href = "https://www.metaboanalyst.ca/MetaboAnalyst/upload/ConvertView.xhtml")),
+                          
+                          helpText(HTML("Chong J, <i>et al</i>. MetaboAnalyst 4.0: towards more transparent and integrative metabolomics analysis.",
+                                        "Nucleic Acids Res. 2018 Jul 2;46(W1):W486-W494.")),
+                          
+                          helpText(a(HTML("<b>The Chemical Translation Service</b>"), href = "http://cts.fiehnlab.ucdavis.edu/")),
+                          
+                          helpText(HTML("Wohlgemuth G,<i>et al</i>. The Chemical Translation Service--a web-based tool to improve standardization",
+                                        " of metabolomic reports. Bioinformatics. 2010 Oct 15;26(20):2647-8."))
              ),
              
              mainPanel(DT::dataTableOutput("IDtable")

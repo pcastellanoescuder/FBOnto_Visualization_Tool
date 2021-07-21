@@ -263,8 +263,27 @@ output$IDtable <- DT::renderDataTable({
 observe({
   
   if (input$exampleORA){
-    updateTextAreaInput(session, "metaboliteList", value = paste(fobitools::idmap$FOBI[1:70], collapse = "\n"))
-    updateTextAreaInput(session, "metaboliteUniverse", value = paste(fobitools::idmap$FOBI[1:200], collapse = "\n"))
+    
+    # select 300 random metabolites from FOBI
+    idx_universe <- sample(nrow(fobitools::idmap), 300, replace = FALSE)
+    
+    metaboliteUniverse_ex <- fobitools::idmap %>%
+      dplyr::slice(idx_universe) %>%
+      pull(FOBI)
+    
+    # select 10 random metabolites from metaboliteUniverse_ex that are associated with 'Red meat' (FOBI:0193), 
+    # 'Lean meat' (FOBI:0185) , 'egg food product' (FOODON:00001274), 
+    # or 'grape (whole, raw)' (FOODON:03301702)
+    fobi_subset <- fobitools::fobi %>% # equivalent to `parse_fobi()`
+      filter(FOBI %in% metaboliteUniverse_ex) %>%
+      filter(id_BiomarkerOf %in% c("FOBI:0193", "FOBI:0185", "FOODON:00001274", "FOODON:03301702")) %>%
+      dplyr::slice(sample(nrow(.), 10, replace = FALSE))
+    
+    metaboliteList_ex <- fobi_subset %>%
+      pull(FOBI)
+    
+    updateTextAreaInput(session, "metaboliteList", value = paste(metaboliteList_ex, collapse = "\n"))
+    updateTextAreaInput(session, "metaboliteUniverse", value = paste(metaboliteUniverse_ex, collapse = "\n"))
   } 
   else {
     updateTextAreaInput(session, "metaboliteList", value = "")
